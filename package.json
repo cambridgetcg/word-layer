@@ -1,0 +1,15 @@
+{
+  "name": "word-layer",
+  "version": "0.1.0",
+  "description": "Natural language domains — each word is its own domain, no dots, no www, just the word.",
+  "type": "module",
+  "scripts": {
+    "dev": "bun src/index.ts",
+    "start": "bun src/index.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "hono": "^4.0.0"
+  },
+  "license": "MIT"
+}
