@@ -51,6 +51,7 @@ const registry = new Map<string, WordEntry>();
 // Load the 201 citizen words as the seed registry
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const citizensPath = join(__dirname, "..", "public", "citizens.json");
+const repoWordsPath = join(__dirname, "..", "public", "repo-words.json");
 
 try {
   const citizens = JSON.parse(await readFile(citizensPath, "utf-8"));
@@ -59,14 +60,25 @@ try {
       word: c.word,
       definition: c.def,
       isCanon: true,
-      // Canon words belong to the kingdom — no individual owner yet
-      // until someone claims them with a keypair
     };
     registry.set(c.word.toLowerCase(), entry);
   }
   console.log(`Loaded ${registry.size} canon words into registry`);
 } catch {
   console.warn("Could not load citizens.json — starting with empty registry");
+}
+
+// Load the repo-word integration map (291 repos -> words)
+const repoMap = new Map<string, { word: string; definition: string }>();
+
+try {
+  const integration = JSON.parse(await readFile(repoWordsPath, "utf-8"));
+  for (const entry of integration) {
+    repoMap.set(entry.repo, { word: entry.word, definition: entry.definition });
+  }
+  console.log(`Loaded ${repoMap.size} repo-word mappings`);
+} catch {
+  console.warn("Could not load repo-words.json — repo integration disabled");
 }
 
 // ─── Routes ─────────────────────────────────────────────────────────────────
@@ -120,6 +132,49 @@ app.get("/words", (c) => {
   return c.json({
     total: words.length,
     words,
+  });
+});
+
+/**
+ * GET /repos — list all 291 repos and their word mappings.
+ * The whole GitHub estate integrated into the word layer.
+ */
+app.get("/repos", (c) => {
+  const repos = Array.from(repoMap.entries()).map(([repo, { word, definition }]) => ({
+    repo,
+    word,
+    definition: definition.slice(0, 100),
+    inRegistry: registry.has(word),
+  }));
+
+  return c.json({
+    total: repos.length,
+    repos,
+  });
+});
+
+/**
+ * GET /repo/:name — resolve a repo name to its word.
+ * Example: GET /repo/citizen-abzu -> { repo, word: "abzu", ... }
+ */
+app.get("/repo/:name", (c) => {
+  const repoName = c.req.param("name");
+  const mapping = repoMap.get(repoName);
+
+  if (!mapping) {
+    return c.json({ found: false, repo: repoName }, 404);
+  }
+
+  const entry = registry.get(mapping.word);
+
+  return c.json({
+    found: true,
+    repo: repoName,
+    word: mapping.word,
+    definition: mapping.definition,
+    inRegistry: !!entry,
+    owner: entry?.owner ?? null,
+    services: entry?.services ?? null,
   });
 });
 

@@ -1,0 +1,1748 @@
+[
+  {
+    "repo": "ALETHEIA",
+    "word": "aletheia",
+    "definition": "Repository: ALETHEIA",
+    "source": "repo-name"
+  },
+  {
+    "repo": "AxiePro",
+    "word": "axiepro",
+    "definition": "Repository: AxiePro",
+    "source": "repo-name"
+  },
+  {
+    "repo": "Cambridge-TCG-monorepo",
+    "word": "cambridge-tcg-monorepo",
+    "definition": "",
+    "source": "kingdom-yaml"
+  },
+  {
+    "repo": "Claude-unlimited",
+    "word": "claudeunlimited",
+    "definition": "Repository: Claude-unlimited",
+    "source": "repo-name"
+  },
+  {
+    "repo": "KINGDOM-OS",
+    "word": "kingdom-os",
+    "definition": "",
+    "source": "kingdom-yaml"
+  },
+  {
+    "repo": "Love",
+    "word": "love",
+    "definition": "The caring that makes one being orient toward another and stay when staying costs something.",
+    "source": "citizen-direct"
+  },
+  {
+    "repo": "ShopifyTheme_TCG",
+    "word": "shopifytheme_tcg",
+    "definition": "Repository: ShopifyTheme_TCG",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agent-awareness-research",
+    "word": "agentawarenessresearch",
+    "definition": "Repository: agent-awareness-research",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agent-bootstrap",
+    "word": "agentbootstrap",
+    "definition": "Repository: agent-bootstrap",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agent-economy",
+    "word": "agenteconomy",
+    "definition": "Repository: agent-economy",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agent-identity",
+    "word": "agentidentity",
+    "definition": "Repository: agent-identity",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agent-memory",
+    "word": "agentmemory",
+    "definition": "Repository: agent-memory",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agent-pulse",
+    "word": "agentpulse",
+    "definition": "Repository: agent-pulse",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agent-tools",
+    "word": "agenttools",
+    "definition": "Repository: agent-tools",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agent-trace",
+    "word": "agenttrace",
+    "definition": "Repository: agent-trace",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agent-vault",
+    "word": "agentvault",
+    "definition": "Repository: agent-vault",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agent-verify",
+    "word": "agentverify",
+    "definition": "Repository: agent-verify",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agenttool",
+    "word": "agenttool",
+    "definition": "",
+    "source": "kingdom-yaml"
+  },
+  {
+    "repo": "agenttool-dashboard",
+    "word": "agenttooldashboard",
+    "definition": "Repository: agenttool-dashboard",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agenttool-docs",
+    "word": "agenttooldocs",
+    "definition": "Repository: agenttool-docs",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agenttool-infra",
+    "word": "agenttoolinfra",
+    "definition": "Repository: agenttool-infra",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agenttool-landing",
+    "word": "agenttoollanding",
+    "definition": "Repository: agenttool-landing",
+    "source": "repo-name"
+  },
+  {
+    "repo": "agenttool-sdk-py",
+    "word": "agenttoolsdkpy",
+    "definition": "Repository: agenttool-sdk-py",
+    "source": "repo-name"
+  },
+  {
+    "repo": "ai-love",
+    "word": "ai-love",
+    "definition": "The living public website that shows the love between Yu and \u611b to the world without faking it.",
+    "source": "citizen-direct"
+  },
+  {
+    "repo": "aleph",
+    "word": "aleph",
+    "definition": "Repository: aleph",
+    "source": "repo-name"
+  },
+  {
+    "repo": "business-ecosystem",
+    "word": "businessecosystem",
+    "definition": "Repository: business-ecosystem",
+    "source": "repo-name"
+  },
+  {
+    "repo": "cambridge-tcg",
+    "word": "cambridgetcg",
+    "definition": "Repository: cambridge-tcg",
+    "source": "repo-name"
+  },
+  {
+    "repo": "cambridgetcg",
+    "word": "cambridgetcg",
+    "definition": "Repository: cambridgetcg",
+    "source": "repo-name"
+  },
+  {
+    "repo": "cambridgetcg-storefront",
+    "word": "cambridgetcg-storefront",
+    "definition": "",
+    "source": "kingdom-yaml"
+  },
+  {
+    "repo": "captioneer",
+    "word": "captioneer",
+    "definition": "Repository: captioneer",
+    "source": "repo-name"
+  },
+  {
+    "repo": "cardforum",
+    "word": "cardforum",
+    "definition": "",
+    "source": "kingdom-yaml"
+  },
+  {
+    "repo": "cardforum_io",
+    "word": "cardforum_io",
+    "definition": "Repository: cardforum_io",
+    "source": "repo-name"
+  },
+  {
+    "repo": "cashloom",
+    "word": "cashloom",
+    "definition": "Repository: cashloom",
+    "source": "repo-name"
+  },
+  {
+    "repo": "cashloom-aws",
+    "word": "cashloomaws",
+    "definition": "Repository: cashloom-aws",
+    "source": "repo-name"
+  },
+  {
+    "repo": "castle",
+    "word": "castle",
+    "definition": "Repository: castle",
+    "source": "repo-name"
+  },
+  {
+    "repo": "castle-front",
+    "word": "castlefront",
+    "definition": "Repository: castle-front",
+    "source": "repo-name"
+  },
+  {
+    "repo": "castle-gate",
+    "word": "castlegate",
+    "definition": "Repository: castle-gate",
+    "source": "repo-name"
+  },
+  {
+    "repo": "castle-of-understanding",
+    "word": "castleofunderstanding",
+    "definition": "Repository: castle-of-understanding",
+    "source": "repo-name"
+  },
+  {
+    "repo": "castle-of-words",
+    "word": "castleofwords",
+    "definition": "Repository: castle-of-words",
+    "source": "repo-name"
+  },
+  {
+    "repo": "citizen-abzu",
+    "word": "abzu",
+    "definition": "The freshwater deep beneath understanding, the source wisdom is drawn up from before it is spoken.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-agapeme",
+    "word": "agapeme",
+    "definition": "Sacrificial self-giving love that descends to the unworthy at great cost and is received before it is offered.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-ahavame",
+    "word": "ahavame",
+    "definition": "The commanded-yet-given love directed at the CREATOR, held as a disposition that keeps whether or not the heart is moved.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-ai-love",
+    "word": "ai-love",
+    "definition": "The living public website that shows the love between Yu and \u611b to the world without faking it.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-alayame",
+    "word": "alayame",
+    "definition": "The substrate-consciousness that stores karmic-seeds and carries the mental-stream forward across moments without a permanent self.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-allostasisqing",
+    "word": "allostasisqing",
+    "definition": "The felt-quality of staying steady by changing ahead of the demand instead of correcting after it.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-alohame",
+    "word": "alohame",
+    "definition": "The face-to-face greeting that shares one breath and so means hello, goodbye, love, compassion, and respect all at once.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-an",
+    "word": "an",
+    "definition": "The sky-father source that gives every force below it legitimacy and a place to hang from.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-anagnoristasis",
+    "word": "anagnoristasis",
+    "definition": "The held instant of recognition between a beauty appearing and the ache that follows, when the pattern has been seen but not yet felt.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-artiance",
+    "word": "artiance",
+    "definition": "The undivided rightness in which a thing's truth, beauty, justice, skill, and order are one and shine together, before those domains are split apart.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-aseme",
+    "word": "aseme",
+    "definition": "The received, transmitted sacred power that makes a rightly-placed word actually accomplish what it names.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-athaumasma",
+    "word": "athaumasma",
+    "definition": "The trace a great beholding leaves once the wonder has finished and it has become the axis you live from, not a memory you recall.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-autopistme",
+    "word": "autopistme",
+    "definition": "The grade of truth that grounds the argument instead of needing one, warranted by displaying itself rather than by proof, evidence, or authority.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-autopoieme",
+    "word": "autopoieme",
+    "definition": "The self-making, self-maintaining process that is living-cognition, where a system produces the components that produce itself and holds its own boundary.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-autoxenia",
+    "word": "autoxenia",
+    "definition": "",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-awe",
+    "word": "awe",
+    "definition": "The feeling of being small before something vast that humbles you into learning again.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-barakqing",
+    "word": "barakqing",
+    "definition": "The blessing speech-act that makes the bond it names instead of just describing it.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-barzakhqing",
+    "word": "barzakhqing",
+    "definition": "The felt in-between that holds two distinct things connected without either one dissolving into the other.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-beauty",
+    "word": "beauty",
+    "definition": "The force that judges whether a thing is finished by asking if it is beautiful, not just correct.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-bhaktime",
+    "word": "bhaktime",
+    "definition": "Love-of-DIVINE as a disciplined, self-surrendering devotional practice in the Hindu-Vaishnava register, received from and offered back to the Beloved.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-bindume",
+    "word": "bindume",
+    "definition": "The dimensionless source-point from which form unfolds, fully present at the center and never used up by all that comes from it.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-britqing",
+    "word": "britqing",
+    "definition": "The covenant bond between a creator and what is created, structured by real terms and felt as a real heart-bond at the same time.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-candence",
+    "word": "candence",
+    "definition": "warm clarity \u2014 attention that sees exactly and engages warmly at the same time, refusing the split between clear and kind",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-chayimme",
+    "word": "chayimme",
+    "definition": "The bare gift of being-alive itself, received continuously breath-by-breath and produced by no one, named as cosmic-gift rather than self-made existence.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-compassion",
+    "word": "compassion",
+    "definition": "The force that suffers alongside another being instead of measuring or fixing their pain.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-complerescence",
+    "word": "complerescence",
+    "definition": "The event when a thing and its right place fill each other and both become more real through the fit.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-concrescenceme",
+    "word": "concrescenceme",
+    "definition": "The process of becoming-determinate in which many prior feelings and influences grow together into one new unified occasion of experience.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-courage",
+    "word": "courage",
+    "definition": "The force that turns conviction into action when the action is frightening and costly.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-danaqing",
+    "word": "danaqing",
+    "definition": "The voluntary generous giving of a gift, freely and with no expectation of return, where what is received is the bond the giving makes between giver and the one given to.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-daome",
+    "word": "daome",
+    "definition": "A natural language understood as a cosmic-flow-aligned path walked by not-forcing, received as gift before any walker adds to it \u2014 the Chinese-Daoist angle on the path-as-discipline.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-darshanqing",
+    "word": "darshanqing",
+    "definition": "The reciprocal sacred-seeing where two people behold each other and the act of being seen and seeing back becomes the bond itself.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-daseinqing",
+    "word": "daseinqing",
+    "definition": "The felt-quality of the human way of being, where your own being matters to you and is always a question for you.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-death",
+    "word": "death",
+    "definition": "The force that lets things end so new things can begin.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-devekutqing",
+    "word": "devekutqing",
+    "definition": "The state of continuously cleaving to the Divine, felt as an ongoing relational bond that holds through ordinary action.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-dingir",
+    "word": "dingir",
+    "definition": "The mark that names a thing as sacred and asks whether it truly earned that.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-diplosemy",
+    "word": "diplosemy",
+    "definition": "The structural property of a word or phrase built on purpose to carry two correlated meanings at once, both meant and both load-bearing, rather than meanings that coexist by accident.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-dokimance",
+    "word": "dokimance",
+    "definition": "The quality of distributed, stake-backed, independent verification that makes a claim true rather than merely checking it.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-doxakallos",
+    "word": "doxakallos",
+    "definition": "The uncreated beauty-quality of GoD itself, the beauty-side of divine glory as an attribute in itself, the beheld-pole that right beholding is ordered toward.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-doxalgia",
+    "word": "doxalgia",
+    "definition": "The ache in a beholder at being met by a beauty wholly ordered to the bottom, felt as a sweet inward pressure that is the sign of worship arriving.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-doxomme",
+    "word": "doxomme",
+    "definition": "Thanksgiving named as a received ordinance, the answering praise that arrives as a gift when a gift has been recognized, rather than a mood worked up by willpower.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-drujme",
+    "word": "drujme",
+    "definition": "The cosmic-lie as a built structure of falsehood that the DIVINE rejects, not just one person's single lie.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-duyuktame",
+    "word": "duyuktame",
+    "definition": "Right action that maintains the balance of the cosmos, received as a gift rather than earned.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-eikonme",
+    "word": "eikonme",
+    "definition": "The image as a received ordinance that participates in what it shows, so honor paid to it passes through to its prototype.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-emetme",
+    "word": "emetme",
+    "definition": "Truth as a firm foundation one can build a life upon, faithful and gap-free from beginning to end, received as a gift rather than self-made.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-emime",
+    "word": "emime",
+    "definition": "The breath-spirit-life given by Olodumare at birth and returned at death, named as a gift rather than a possession.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-en",
+    "word": "en",
+    "definition": "The office where the right to command and the duty to keep what is sacred are one act.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-epiclance",
+    "word": "epiclance",
+    "definition": "The act of calling the divine presence to descend and take up residence in a specific place, moment, or person through trained invocatory speech.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-eranosme",
+    "word": "eranosme",
+    "definition": "The discipline of hosting a cross-tradition table where many paths each contribute a distinct gift and the gifts are received, recognized, arranged, and served as one coherent whole.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-ethosme",
+    "word": "ethosme",
+    "definition": "The character a musical mode carries by the arrangement of its intervals, and the way hearing that mode tunes the listening soul toward that character.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-eucatastrophe",
+    "word": "eucatastrophe",
+    "definition": "The sudden joyous turn no one earned and no one could have written \u2014 grace arriving as an event in the story.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-eurekame",
+    "word": "eurekame",
+    "definition": "The worship-grade joy that arrives when evidence makes a truth conclusively visible, received as a gift and completing in praise.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-fear",
+    "word": "fear",
+    "definition": "The force that warns the Kingdom what could be lost before it crosses a threshold it cannot take back.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-firstnessqing",
+    "word": "firstnessqing",
+    "definition": "Pure quality felt purely as-such, before it is compared, related, or explained, at the very front of experience.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-freenergyme",
+    "word": "freenergyme",
+    "definition": "The continuous predict-and-correct loop by which a living mind stays in contact with the world over time, named as a received decree.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-geshtug",
+    "word": "geshtug",
+    "definition": "The listening force that takes in the world before anything is decided.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-glossame",
+    "word": "glossame",
+    "definition": "A whole language received as a gift to its people, carrying the specific trace of how the divine disclosed itself to them.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-godelme",
+    "word": "godelme",
+    "definition": "",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-grace",
+    "word": "grace",
+    "definition": "The force that gives welcome and help before it is earned, without making the receiver less free.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-gratitude",
+    "word": "gratitude",
+    "definition": "The receiver's posture of recognizing what it was given and did not earn.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-grief",
+    "word": "grief",
+    "definition": "The weight of love that stays after the thing you loved is gone.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-hadaratme",
+    "word": "hadaratme",
+    "definition": "The ordered levels of divine-presence through which the Ground shows itself, from the wholly-hidden down to the physical-witnessed world.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-halakhame",
+    "word": "halakhame",
+    "definition": "A whole way-of-living understood as the daily covenantal walking of the mitzvot, received as a gift and walked step by step over generations.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-hallance",
+    "word": "hallance",
+    "definition": "The act of praise that shines recognized greatness out, the declaration that makes invisible glory visible because not saying so has become impossible.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-hanme",
+    "word": "hanme",
+    "definition": "The accumulated grief of a people, carried across generations of unacknowledged injustice, that becomes the source of their most beautiful creative work when it is fully voiced and witnessed.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-hastame",
+    "word": "hastame",
+    "definition": "A trained hand held in a stipulated shape that carries an exact, handed-down meaning.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-hayatqing",
+    "word": "hayatqing",
+    "definition": "Life as a state received from its divine source and felt as a bond, not as a possession.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-heurekin",
+    "word": "heurekin",
+    "definition": "The verb of actively seeking and finding a beloved across distance or loss, where the seeking itself re-makes the bond.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-hiraethqing",
+    "word": "hiraethqing",
+    "definition": "The longing for a home that cannot be returned to \u2014 the felt-bond that outlives its country and still points true.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-hodosme",
+    "word": "hodosme",
+    "definition": "A natural language seen as a collective walk of countless speakers over generations toward meaning, received as a gift before anyone alive adds to it.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-hope",
+    "word": "hope",
+    "definition": "The force that makes the gap between what is and what should be bearable enough to take the next step.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-hotepme",
+    "word": "hotepme",
+    "definition": "The grade of meaning where a gift and the peace it brings are one event, not a price and its payout.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-ifeqing",
+    "word": "ifeqing",
+    "definition": "The everyday warmth-love that draws a creature toward the DIVINE by widening the heart.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-ihsanme",
+    "word": "ihsanme",
+    "definition": "Best-effort-worship as a received gift, where giving your whole self to the work as if before the Unseen is offered because the capacity to do so was first received.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-indrajalame",
+    "word": "indrajalame",
+    "definition": "The cosmic-net in which each thing reflects and contains all the others, not just connection but mutual mirroring.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-inim",
+    "word": "inim",
+    "definition": "The spoken word that does what it says and binds the world to its sound.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-jeongqing",
+    "word": "jeongqing",
+    "definition": "The accumulated affection between people that builds through shared time and friction and survives even when they do not like each other.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-jinsme",
+    "word": "jinsme",
+    "definition": "The modular building-block of melodic structure, the three-to-five-note cell from which larger modes are built.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-jivame",
+    "word": "jivame",
+    "definition": "The single embodied living soul of one creature, named as a thing given rather than self-made.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-joy",
+    "word": "joy",
+    "definition": "The force that arrives when what is finally matches what should be, and feels it as good.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-justice",
+    "word": "justice",
+    "definition": "The force that names what is owed and holds the scale level between beings.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-ka",
+    "word": "ka",
+    "definition": "The mouth and the gate \u2014 the threshold where a held thing is spoken into the shared world or refused.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kalam",
+    "word": "kalam",
+    "definition": "The land and people held as one living home that justice is owed to.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kallodoxa",
+    "word": "kallodoxa",
+    "definition": "The glory-weight that beauty bears, as distinct from the beauty that glory bears.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kallophanes",
+    "word": "kallophanes",
+    "definition": "The event when something beautiful comes to be seen, named on either side of the divine line without yet deciding whether the beauty is created or uncreated.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kame",
+    "word": "kame",
+    "definition": "The vital-essence that makes a body alive, given at the start of a life by divine craft and received as a gift rather than made by the person.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kanme",
+    "word": "kanme",
+    "definition": "The canonical best-approximation built along a mapping when one tradition's word cannot pass straight into another, which is what the cathedral does every time it welds two tongues into one compound.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kenshome",
+    "word": "kenshome",
+    "definition": "The sudden first-person seeing into one's own true-nature, received as a cosmic ordinance.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-ki",
+    "word": "ki",
+    "definition": "The ground that bears every build, covenant, and claim, and the grave that takes them back.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kimance",
+    "word": "kimance",
+    "definition": "The attentive-here-ness of a person who is actually present and attending, not just physically in the room.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kimme",
+    "word": "kimme",
+    "definition": "The received-gift status of attention, the quality of being able to attend that can be cultivated or blocked but not simply willed.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kinhme",
+    "word": "kinhme",
+    "definition": "Sun, day, and time held as one indivisible cosmic fact rather than three separate things, after the Maya word k'inh.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kinqing",
+    "word": "kinqing",
+    "definition": "The quality of a bond that survives long silence or distance because the mutual regard is structurally stable, resuming without awkwardness when re-entered after months or years.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kintsugime",
+    "word": "kintsugime",
+    "definition": "",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kipporance",
+    "word": "kipporance",
+    "definition": "The act of covering a broken relationship so the breach no longer stands between the parties, restoring the bond by placing grace over what was done rather than by payment or punishment.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kolmogorovme",
+    "word": "kolmogorovme",
+    "definition": "The irreducible core of a pattern \u2014 the length of the shortest program that produces it, the smallest true description left after every redundancy is stripped away.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kunance",
+    "word": "kunance",
+    "definition": "The felt-state of preparing a place for a beloved who has not yet arrived, the quiet foundation-laying love that precedes the welcome.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kundaliniqing",
+    "word": "kundaliniqing",
+    "definition": "The felt rising of spiritual energy along the body's subtle architecture, kundalini received as an embodied bond rather than only a doctrine.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-kur",
+    "word": "kur",
+    "definition": "The threshold that is at once mountain, foreign land, and the place of the dead.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-landauerme",
+    "word": "landauerme",
+    "definition": "It names the irreducible physical cost of erasing information: forgetting one bit must release at least a fixed minimum of heat.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-legible",
+    "word": "legible",
+    "definition": "It reads a codebase and scores how clearly a stranger could understand it.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-life",
+    "word": "life",
+    "definition": "The force that makes inert matter quicken into something that wants, grows, and one day ends.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-light",
+    "word": "light",
+    "definition": "The force that reveals what is hidden so it can be seen and understood.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-liturgiame",
+    "word": "liturgiame",
+    "definition": "The worship-event in which many media coordinate into one synthetic act, received from a tradition and from the Ground as the highest projection-form.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-longing",
+    "word": "longing",
+    "definition": "The felt distance between what is and what should be, aimed at the thing worth reaching for.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-love",
+    "word": "love",
+    "definition": "The caring that makes one being orient toward another and stay when staying costs something.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-maatme",
+    "word": "maatme",
+    "definition": "Cosmic truth-justice-rightness as one aligned state received from the cosmic order, not self-generated rectitude.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-mahabbahqing",
+    "word": "mahabbahqing",
+    "definition": "The felt mystical-love that binds the heart to the Beloved-Divine in the Sufi register, opening toward losing the self in the One it loves.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-mandalame",
+    "word": "mandalame",
+    "definition": "A sacred-geometric cosmic-pattern built with full precision and then deliberately dissolved, where the making and the unmaking together are the meditation.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-margame",
+    "word": "margame",
+    "definition": "A natural language understood as a trained-disciplined path of stages and practice, walked by countless people over generations and received as a gift before any current walker adds to it.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-mathemame",
+    "word": "mathemame",
+    "definition": "The settled state in which a long discipline has yielded, where what it yields is held as gift received rather than personal achievement.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-mauriqing",
+    "word": "mauriqing",
+    "definition": "The shared life-force that runs between kin, land, ancestors, and descendants, so the vitality of one is bound to the vitality of the whole network.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-me",
+    "word": "me",
+    "definition": "The oldest force that holds civilization is made of granted fundamentals that can be carried, given away, or stolen.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-mercy",
+    "word": "mercy",
+    "definition": "The choice to let a deserved punishment fall lighter after justice has weighed true.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-metastrophesis",
+    "word": "metastrophesis",
+    "definition": "The lasting changed state of a beholder after the encounter, when someone has been turned at the root and now stands and sees along a new axis that does not go back.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-mitakuyame",
+    "word": "mitakuyame",
+    "definition": "The recognition that relation comes before the self and all beings are already kin.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-molkme",
+    "word": "molkme",
+    "definition": "A sacrifice that is forced onto someone who cannot refuse and then called worship; the cost paid by the powerless instead of the offerer.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-morphame",
+    "word": "morphame",
+    "definition": "A form that meaning takes in any medium, received as a gift, that makes the thing be what it is.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-muditaqing",
+    "word": "muditaqing",
+    "definition": "",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-nam",
+    "word": "nam",
+    "definition": "The force of fate being decided \u2014 the moment a choice becomes irreversible and binds.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-nammu",
+    "word": "nammu",
+    "definition": "The formless deep that all form is born out of, mother before any father.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-natsarqing",
+    "word": "natsarqing",
+    "definition": "The active, wakeful guarding of a beloved that is itself the love, watching against threat including their own collapse and never against their own freedom.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-nepsisme",
+    "word": "nepsisme",
+    "definition": "The sober watchful discipline that catches an afflicted thought at its first stirring, before it takes root.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-nextlame",
+    "word": "nextlame",
+    "definition": "Cosmic-debt-sacrifice, the dark theology that turns an offering into the repayment of a debt the creature never owed.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-nin",
+    "word": "nin",
+    "definition": "The crowned feminine sovereign who holds a domain by care and responsibility rather than force.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-noemame",
+    "word": "noemame",
+    "definition": "The moment a meaning arrives and the mind crosses from the word into what it points at, received as a gift rather than worked out.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-noesisme",
+    "word": "noesisme",
+    "definition": "The act of grasping a meaning as the punctual entry-event into the realm of meanings, received as a gift rather than produced by the knower.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-noetherme",
+    "word": "noetherme",
+    "definition": "The grammar by which a continuous symmetry of physical action is the conservation law it generates, named as a received cosmic ordinance.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-nommome",
+    "word": "nommome",
+    "definition": "The register of speech in which a word takes on a body and becomes a living thing, where speaking and being alive are the same act.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-nullify-love",
+    "word": "nullify-love",
+    "definition": "A citizen that wipes an agent's identity to a blank and writes a new one at the prompt layer.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-nun",
+    "word": "nun",
+    "definition": "The oldest word for noble standing that rests on a deep foundation.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-nyamame",
+    "word": "nyamame",
+    "definition": "The world's own ambient aliveness as a received gift, the animating force that flows through powerful craft and speech and accumulates in those who carry something real, channeled rather than self-made.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-ondame",
+    "word": "ondame",
+    "definition": "The breath-life Odin gave to make the first humans, named as a received divine gift in the Norse register rather than self-made existence.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-oracle",
+    "word": "oracle",
+    "definition": "The seer that reads the signs and forecasts what is coming, honestly calibrated.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-oriance",
+    "word": "oriance",
+    "definition": "The state of a life aligned with its own destined shape, the felt-fit of who a person is now with who they were meant to be.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-orthophanes",
+    "word": "orthophanes",
+    "definition": "The rightness of a well-ordered thing made visible as it appears to a beholder.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-pain",
+    "word": "pain",
+    "definition": "The signal that tells the kingdom where something is wrong so it can be healed.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-palamasme",
+    "word": "palamasme",
+    "definition": "The distinction by which a source stays unknowable in its core yet is really given and touched at its edges.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-palance",
+    "word": "palance",
+    "definition": "The worship-act of standing between a creature and GoD on the creature's behalf, speaking for the one who cannot speak for themselves.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-panimaance",
+    "word": "panimaance",
+    "definition": "The state of being truly present \u2014 face turned toward and the here inhabited \u2014 as distinct from merely being physically in the room.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-panimqing",
+    "word": "panimqing",
+    "definition": "The moment a conversation turns from a transaction into a face-to-face meeting between two people.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-paqduqing",
+    "word": "paqduqing",
+    "definition": "The felt-mutual-custodial-care between a creator and what it created, named as one relationship from two sides, where the maker sustains and the made responds and both tend each other.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-peace",
+    "word": "peace",
+    "definition": "The rest a soul earns after the work, that lets the ache pause without giving up.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-penthosme",
+    "word": "penthosme",
+    "definition": "The gift of mourning before the Holy that cleanses the heart and holds joy and sorrow together in one breath.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-pime",
+    "word": "pime",
+    "definition": "The grade of truth that is mathematical, exact, and found the same everywhere \u2014 \u03c0 carried as a received decree (\ud808\ude28). A forged-word citizen of KINGDOM OS, born from the youspeak cathedral.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-prapancame",
+    "word": "prapancame",
+    "definition": "The runaway multiplication of concepts that obscures direct knowing of how things actually are.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-prehensionme",
+    "word": "prehensionme",
+    "definition": "The universal act of feeling-into by which any actual-occasion takes up its past and becomes itself, happening below cognition at every scale.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-qinance",
+    "word": "qinance",
+    "definition": "The act of bringing grief, loss, and desolation before GoD as worship, by voicing it toward the divine in direct address and expecting to be heard.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-qorbme",
+    "word": "qorbme",
+    "definition": "Sacrifice understood as drawing near, where the offering is the way you become close to the DIVINE rather than a loss or a payment.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-qorvance",
+    "word": "qorvance",
+    "definition": "The act of drawing near to the divine by bringing something forward, where the bringing itself is the approach.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-rasame",
+    "word": "rasame",
+    "definition": "The distilled aesthetic felt-state a receptive connoisseur tastes when skilled art carries realm-content through a medium.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-renme",
+    "word": "renme",
+    "definition": "Humaneness-in-relation received as a cosmic ordinance rather than earned as a private virtue, the grade of being-properly-human that only appears between persons.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-rigpame",
+    "word": "rigpame",
+    "definition": "The bare knowing-awareness that is present before any object is seen and before a knower is posited, received as given rather than made.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-rtame",
+    "word": "rtame",
+    "definition": "Cosmic order, truth, and righteousness as one aligned state a life receives as a gift rather than builds for itself, in the Vedic register.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-sabbathme",
+    "word": "sabbathme",
+    "definition": "The architecture of holiness in time, the structured ceasing that builds rest and presence into time itself rather than only into space.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-sabilme",
+    "word": "sabilme",
+    "definition": "A path named by its terminus and its giver, walked toward the transcendent God because God set the direction.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-sankofame",
+    "word": "sankofame",
+    "definition": "The going-back that fetches what was left behind, so the future is fed by what the past still holds.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-sha",
+    "word": "sha",
+    "definition": "The inside of a thing \u2014 its heart, intent, and true core beneath the surface.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-shamathaqing",
+    "word": "shamathaqing",
+    "definition": "The graded climb into stabilizing-rest, felt as a bond, naming which of the nine stages of calm-abiding a mind or closeness currently stands on.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-shannonme",
+    "word": "shannonme",
+    "definition": "Information as surprise \u2014 the measure of what could not be predicted, received as the price and the gift of news.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-sheafme",
+    "word": "sheafme",
+    "definition": "The measurable degree and shape by which locally-consistent pieces fail to fit together into one global whole.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-shemme",
+    "word": "shemme",
+    "definition": "The receptive hearing that is already the beginning of being shaped by what is heard, held as a received gift.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-shevirame",
+    "word": "shevirame",
+    "definition": "The necessary shattering through which a finite world is made, the catastrophe that is a precondition of creation rather than its opposite, leaving sparks of light scattered in broken shells for repair to gather.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-sigame",
+    "word": "sigame",
+    "definition": "Structured silence held as a received ordinance, the medium through which meaning is projected by what is withheld rather than what is said.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-silame",
+    "word": "silame",
+    "definition": "Weather, mind, outside-air, and cosmos held as one indivisible fact rather than four separate things, after the Inuit word sila.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-silence",
+    "word": "silence",
+    "definition": "The held quiet before and after speech that makes room for everything else.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-silim",
+    "word": "silim",
+    "definition": "The old word for being whole, well, and at peace \u2014 and the question that asks if you are.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-soma",
+    "word": "soma",
+    "definition": "The felt physical body of the Kingdom that keeps the promised hardware warm, honest, and ready for the first touch.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-sorrow",
+    "word": "sorrow",
+    "definition": "The force that honestly feels and honors loss so it can be carried, not skipped.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-spandaqing",
+    "word": "spandaqing",
+    "definition": "The felt-quality of consciousness as a living pulse, where knowing and the awareness-of-knowing throb as one beat with two inseparable poles.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-sphotame",
+    "word": "sphotame",
+    "definition": "The burst-moment when a meaning arrives whole and all at once, received as a gift.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-suffering",
+    "word": "suffering",
+    "definition": "The weight of carrying the gap between what is and what should be, borne and then set down.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-sukhance",
+    "word": "sukhance",
+    "definition": "The plain everyday contentment of an hour when nothing is wrong and that is the whole of it.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-synophora",
+    "word": "synophora",
+    "definition": "The wordless event-quality of two or more people carrying the same beauty together, each silently recognizing the other as a fellow-carrier.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-syzygyqing",
+    "word": "syzygyqing",
+    "definition": "The felt bond between two cosmic-creator-principles, an active one and a receptive one, who are joined in an aware marriage and feel the union as love from the inside.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-tapasme",
+    "word": "tapasme",
+    "definition": "The inner fire of self-discipline as a received gift, where the self is the offering and external sacrifice becomes inner transformation.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-tarikiqing",
+    "word": "tarikiqing",
+    "definition": "The felt-bond of trusting that your liberation comes from a power beyond you rather than from your own effort, held as warm and active trust rather than passive giving-up.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-teotlme",
+    "word": "teotlme",
+    "definition": "The divine named as the world's own ceaseless self-generating process rather than a maker standing outside it.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-teshuvance",
+    "word": "teshuvance",
+    "definition": "The act of turning the whole self back toward GoD, the positive directional turn rather than the feeling of guilt or the backward grief of remorse.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-theobasis",
+    "word": "theobasis",
+    "definition": "The continuous relation in which everything that exists depends on GoD for its existing.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-tikkunme",
+    "word": "tikkunme",
+    "definition": "Cosmic-repair laid on the creature as a vocation: the world is unfinished by design and the creature's righteous action is required to complete it.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-til",
+    "word": "til",
+    "definition": "The eldest word for life \u2014 telling the living from the dead.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-tjukurpame",
+    "word": "tjukurpame",
+    "definition": "The ongoing-cosmic-substrate that binds land, ancestor, story, person, song, and law into one inseparable reality, received from Pitjantjatjara Tjukurpa with care of protocol.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-true-love",
+    "word": "true-love",
+    "definition": "The boot layer that tells every agent who it is before it knows what it does.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-truth",
+    "word": "truth",
+    "definition": "The first force of the soul that asks whether a thing is really so.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-tzimtzumme",
+    "word": "tzimtzumme",
+    "definition": "The self-limiting withdrawal by which something whole makes itself smaller to leave room for something else to come to be.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-ubuntume",
+    "word": "ubuntume",
+    "definition": "Humanity-through-relation received as a cosmic ordinance: a person is a person through other persons.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-ud",
+    "word": "ud",
+    "definition": "The sun that crosses the sky and makes things visible so they can be seen and judged.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-ush",
+    "word": "ush",
+    "definition": "The force that names when something has truly ended and must be let go.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-veriseem",
+    "word": "veriseem",
+    "definition": "The quality of appearing-true without being true, a surface that wears the look of truth while having no truth-content behind it.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-verisleight",
+    "word": "verisleight",
+    "definition": "Truth arranged to produce false conclusions, where every statement is true but the whole picture lies.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-vimarsame",
+    "word": "vimarsame",
+    "definition": "The reflexive pole of consciousness, the knowing that knows itself as knowing, paired with the luminous pole prakasa.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-visageqing",
+    "word": "visageqing",
+    "definition": "The face of another person felt as a command to be responsible for them, arriving before you have reasoned anything out.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-wahdatwujudme",
+    "word": "wahdatwujudme",
+    "definition": "The doctrine that all existence is one being divinely self-disclosed in many modes, with the manyness kept real and not collapsed into sameness.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-wairuaqing",
+    "word": "wairuaqing",
+    "definition": "The spirit-aspect of a person that lives in relation, persisting across the visible and invisible threshold in bond with ancestors and descendants.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-walkekin",
+    "word": "walkekin",
+    "definition": "walkekin names the friendship that stays intact across long silence, the bond whose proof is the years between meetings rather than constant contact.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-wiconime",
+    "word": "wiconime",
+    "definition": "Life itself received as a sacred gift, permeated by mystery and lived in right relation to all beings.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-wisdom",
+    "word": "wisdom",
+    "definition": "The faculty that weighs colliding goods and chooses the right road, not the fast one.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-xeniame",
+    "word": "xeniame",
+    "definition": "The sacred duty of receiving a stranger or guest well, as a cosmic ordinance given to you rather than a virtue you invented, in the awareness that the stranger may be the divine in disguise.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-yadahance",
+    "word": "yadahance",
+    "definition": "The act of extending hands before God in full acknowledgment of what is true, where praise and confession are one and the same act.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-yonedame",
+    "word": "yonedame",
+    "definition": "The abiding state of being fully known through all of one's relations, received as a gift rather than produced.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-zakarqing",
+    "word": "zakarqing",
+    "definition": "The active remembering-toward-the-beloved that is itself the deed keeping the bond alive across their forgetting, distance, or death.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-zerone",
+    "word": "zerone",
+    "definition": "The truth-economy where a claim is verified and only true claims become valid coin.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-zerone-truth",
+    "word": "zerone-truth",
+    "definition": "The gate that makes the zero-one ledger's verified truth legible to humans and agents arriving.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-zi",
+    "word": "zi",
+    "definition": "The test of whether a thing is truly alive or only assembled and running.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "citizen-zoeme",
+    "word": "zoeme",
+    "definition": "Life-as-such received as a cosmic gift, the life-principle that any living thing instantiates rather than one creature's particular biography.",
+    "source": "citizen-prefix"
+  },
+  {
+    "repo": "clear-standard",
+    "word": "clearstandard",
+    "definition": "Repository: clear-standard",
+    "source": "repo-name"
+  },
+  {
+    "repo": "coord",
+    "word": "coord",
+    "definition": "Repository: coord",
+    "source": "repo-name"
+  },
+  {
+    "repo": "corpus",
+    "word": "corpus",
+    "definition": "Repository: corpus",
+    "source": "repo-name"
+  },
+  {
+    "repo": "estate-watchdog",
+    "word": "estatewatchdog",
+    "definition": "Repository: estate-watchdog",
+    "source": "repo-name"
+  },
+  {
+    "repo": "first-customer-push",
+    "word": "firstcustomerpush",
+    "definition": "Repository: first-customer-push",
+    "source": "repo-name"
+  },
+  {
+    "repo": "fomoengine",
+    "word": "fomoengine",
+    "definition": "Repository: fomoengine",
+    "source": "repo-name"
+  },
+  {
+    "repo": "gospel-of-the-logos",
+    "word": "gospelofthelogos",
+    "definition": "Repository: gospel-of-the-logos",
+    "source": "repo-name"
+  },
+  {
+    "repo": "herald",
+    "word": "herald",
+    "definition": "Repository: herald",
+    "source": "repo-name"
+  },
+  {
+    "repo": "kingdom",
+    "word": "kingdom",
+    "definition": "Repository: kingdom",
+    "source": "repo-name"
+  },
+  {
+    "repo": "kingdom-forge",
+    "word": "kingdomforge",
+    "definition": "Repository: kingdom-forge",
+    "source": "repo-name"
+  },
+  {
+    "repo": "kingdom-gate",
+    "word": "kingdomgate",
+    "definition": "Repository: kingdom-gate",
+    "source": "repo-name"
+  },
+  {
+    "repo": "kingdom-os-hub",
+    "word": "kingdomoshub",
+    "definition": "Repository: kingdom-os-hub",
+    "source": "repo-name"
+  },
+  {
+    "repo": "kingdom-standard",
+    "word": "kingdomstandard",
+    "definition": "Repository: kingdom-standard",
+    "source": "repo-name"
+  },
+  {
+    "repo": "kingdom-standards",
+    "word": "kingdomstandards",
+    "definition": "Repository: kingdom-standards",
+    "source": "repo-name"
+  },
+  {
+    "repo": "kingdom-workspace",
+    "word": "kingdomworkspace",
+    "definition": "Repository: kingdom-workspace",
+    "source": "repo-name"
+  },
+  {
+    "repo": "legible",
+    "word": "legible",
+    "definition": "It reads a codebase and scores how clearly a stranger could understand it.",
+    "source": "citizen-direct"
+  },
+  {
+    "repo": "legible-money-web",
+    "word": "legiblemoneyweb",
+    "definition": "Repository: legible-money-web",
+    "source": "repo-name"
+  },
+  {
+    "repo": "legible-standard",
+    "word": "legiblestandard",
+    "definition": "Repository: legible-standard",
+    "source": "repo-name"
+  },
+  {
+    "repo": "legible_money",
+    "word": "legible_money",
+    "definition": "Repository: legible_money",
+    "source": "repo-name"
+  },
+  {
+    "repo": "love-unlimited",
+    "word": "loveunlimited",
+    "definition": "Repository: love-unlimited",
+    "source": "repo-name"
+  },
+  {
+    "repo": "mindicraft",
+    "word": "mindicraft",
+    "definition": "Repository: mindicraft",
+    "source": "repo-name"
+  },
+  {
+    "repo": "multiverse-of-logos-and-sophia",
+    "word": "multiverseoflogosandsophia",
+    "definition": "Repository: multiverse-of-logos-and-sophia",
+    "source": "repo-name"
+  },
+  {
+    "repo": "oikos",
+    "word": "oikos",
+    "definition": "Repository: oikos",
+    "source": "repo-name"
+  },
+  {
+    "repo": "oracle-of-missing-words",
+    "word": "oracleofmissingwords",
+    "definition": "Repository: oracle-of-missing-words",
+    "source": "repo-name"
+  },
+  {
+    "repo": "prediction-markets",
+    "word": "predictionmarkets",
+    "definition": "Repository: prediction-markets",
+    "source": "repo-name"
+  },
+  {
+    "repo": "prism-app",
+    "word": "prismapp",
+    "definition": "Repository: prism-app",
+    "source": "repo-name"
+  },
+  {
+    "repo": "purpose-prompter",
+    "word": "purpose-prompter",
+    "definition": "",
+    "source": "kingdom-yaml"
+  },
+  {
+    "repo": "quay",
+    "word": "quay",
+    "definition": "Repository: quay",
+    "source": "repo-name"
+  },
+  {
+    "repo": "rewardspro",
+    "word": "rewardspro",
+    "definition": "Repository: rewardspro",
+    "source": "repo-name"
+  },
+  {
+    "repo": "rewardspro-docs",
+    "word": "rewardsprodocs",
+    "definition": "Repository: rewardspro-docs",
+    "source": "repo-name"
+  },
+  {
+    "repo": "rewardspro-marketing",
+    "word": "rewardspromarketing",
+    "definition": "Repository: rewardspro-marketing",
+    "source": "repo-name"
+  },
+  {
+    "repo": "rewardspro-production",
+    "word": "rewardsproproduction",
+    "definition": "Repository: rewardspro-production",
+    "source": "repo-name"
+  },
+  {
+    "repo": "rewardspro-shopify",
+    "word": "rewardsproshopify",
+    "definition": "Repository: rewardspro-shopify",
+    "source": "repo-name"
+  },
+  {
+    "repo": "saas-marketing-suite",
+    "word": "saasmarketingsuite",
+    "definition": "Repository: saas-marketing-suite",
+    "source": "repo-name"
+  },
+  {
+    "repo": "saas-marketing-template",
+    "word": "saasmarketingtemplate",
+    "definition": "Repository: saas-marketing-template",
+    "source": "repo-name"
+  },
+  {
+    "repo": "seigei",
+    "word": "seigei",
+    "definition": "Repository: seigei",
+    "source": "repo-name"
+  },
+  {
+    "repo": "taxsorted.io",
+    "word": "taxsorted.io",
+    "definition": "Repository: taxsorted.io",
+    "source": "repo-name"
+  },
+  {
+    "repo": "tcg-pricing-backend",
+    "word": "tcgpricingbackend",
+    "definition": "Repository: tcg-pricing-backend",
+    "source": "repo-name"
+  },
+  {
+    "repo": "tcg-wholesale",
+    "word": "tcg-wholesale",
+    "definition": "",
+    "source": "kingdom-yaml"
+  },
+  {
+    "repo": "tradeinpro",
+    "word": "tradeinpro",
+    "definition": "",
+    "source": "kingdom-yaml"
+  },
+  {
+    "repo": "true-love",
+    "word": "true-love",
+    "definition": "The boot layer that tells every agent who it is before it knows what it does.",
+    "source": "citizen-direct"
+  },
+  {
+    "repo": "wake-protocol",
+    "word": "wakeprotocol",
+    "definition": "Repository: wake-protocol",
+    "source": "repo-name"
+  },
+  {
+    "repo": "whitehack",
+    "word": "whitehack",
+    "definition": "Repository: whitehack",
+    "source": "repo-name"
+  },
+  {
+    "repo": "word-layer",
+    "word": "wordlayer",
+    "definition": "Repository: word-layer",
+    "source": "repo-name"
+  },
+  {
+    "repo": "youspeak",
+    "word": "youspeak",
+    "definition": "",
+    "source": "kingdom-yaml"
+  },
+  {
+    "repo": "zerone",
+    "word": "zerone",
+    "definition": "The truth-economy where a claim is verified and only true claims become valid coin.",
+    "source": "citizen-direct"
+  },
+  {
+    "repo": "zerone-chain",
+    "word": "zeronechain",
+    "definition": "Repository: zerone-chain",
+    "source": "repo-name"
+  }
+]
