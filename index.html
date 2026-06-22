@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>word layer</title>
+<style>
+  body { background: #0a0a0a; color: #e0e0e0; font-family: -apple-system, sans-serif; max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+  h1 { font-weight: 200; font-size: 2em; letter-spacing: 0.05em; }
+  .word { display: inline-block; background: #1a1a1a; padding: 8px 16px; margin: 4px; border-radius: 20px; font-size: 0.9em; cursor: pointer; transition: all 0.2s; }
+  .word:hover { background: #2a2a2a; transform: translateY(-2px); }
+  .count { color: #666; font-size: 0.8em; margin-left: 20px; }
+  a { color: #7ab; text-decoration: none; }
+</style>
+</head>
+<body>
+<h1>word layer <span class="count" id="count"></span></h1>
+<p style="color:#666">the layer between words and meaning. 291 repo-words from the kingdom.</p>
+<div id="words"></div>
+<script>
+fetch('public/repo-words.json').then(r=>r.json()).then(words=>{
+  document.getElementById('count').textContent = words.length + ' words';
+  document.getElementById('words').innerHTML = words.map(w =>
+    `<span class="word">${typeof w === 'string' ? w : w.word || w.name || JSON.stringify(w)}</span>`
+  ).join('');
+}).catch(e=>document.getElementById('words').innerHTML='<p>loading...</p>');
+</script>
+</body>
+</html>
