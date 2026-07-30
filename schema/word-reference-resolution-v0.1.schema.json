@@ -1,0 +1,301 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "word-reference-resolution-v0.1.schema.json",
+  "title": "Word Reference 0.1 Exact-Name Resolution",
+  "description": "A strict, plural, zero-effect exact-name resolution. It verifies, selects, and navigates nothing.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "mode",
+    "query",
+    "found",
+    "meanings",
+    "ambiguity",
+    "selection"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "word-reference/0.1"
+    },
+    "mode": {
+      "const": "exact_name"
+    },
+    "query": {
+      "$ref": "#/$defs/query"
+    },
+    "found": {
+      "type": "boolean"
+    },
+    "meanings": {
+      "type": "array",
+      "maxItems": 8192,
+      "items": {
+        "$ref": "#/$defs/meaning"
+      }
+    },
+    "ambiguity": {
+      "$ref": "#/$defs/ambiguity"
+    },
+    "selection": {
+      "type": "null",
+      "const": null
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "found": {
+            "const": true
+          }
+        },
+        "required": [
+          "found"
+        ]
+      },
+      "then": {
+        "properties": {
+          "meanings": {
+            "minItems": 1
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "meanings": {
+            "maxItems": 0
+          },
+          "ambiguity": {
+            "properties": {
+              "meanings": {
+                "const": 0
+              },
+              "references": {
+                "const": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9._/-]{0,254}[A-Za-z0-9])?$"
+    },
+    "word": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{M}]*(?:[-'’][\\p{L}\\p{N}][\\p{L}\\p{N}\\p{M}]*)*$"
+    },
+    "language": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "^[a-z]{2,8}(?:-[a-z0-9]{1,8})*$"
+    },
+    "bounded_assertion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048,
+      "pattern": "^[^\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001F\\u007F\\uD800-\\uDFFF]+$"
+    },
+    "bounded_proof": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8192,
+      "pattern": "^[^\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001F\\u007F\\uD800-\\uDFFF]+$"
+    },
+    "nullable_assertion": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/bounded_assertion"
+        }
+      ]
+    },
+    "nullable_proof": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/bounded_proof"
+        }
+      ]
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input",
+        "normalized"
+      ],
+      "properties": {
+        "input": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001F\\u007F\\uD800-\\uDFFF]+$"
+        },
+        "normalized": {
+          "$ref": "#/$defs/word"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "record_id",
+        "definition_sha256"
+      ],
+      "properties": {
+        "source_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "record_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "definition_sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reference_id",
+        "kind",
+        "href",
+        "source_id",
+        "asserted_by",
+        "proof",
+        "verification",
+        "trust"
+      ],
+      "properties": {
+        "reference_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "kind": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "pattern": "^[a-z][a-z0-9_-]*$"
+        },
+        "href": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192,
+          "format": "uri",
+          "allOf": [
+            {
+              "pattern": "^[^\\u0000-\\u001F\\u007F\\uD800-\\uDFFF]+$"
+            },
+            {
+              "pattern": "^https?://(?![^/?#]*@)(?:\\[[^\\]/?#@\\s]+\\]|[^/?#:@\\s]+)(?::[0-9]{1,5})?(?:[/?#]|$)"
+            }
+          ]
+        },
+        "source_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "asserted_by": {
+          "$ref": "#/$defs/nullable_assertion"
+        },
+        "proof": {
+          "$ref": "#/$defs/nullable_proof"
+        },
+        "verification": {
+          "const": "unverified"
+        },
+        "trust": {
+          "const": "untrusted"
+        }
+      }
+    },
+    "meaning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meaning_id",
+        "word",
+        "language",
+        "definition",
+        "provenance",
+        "trust",
+        "references"
+      ],
+      "properties": {
+        "meaning_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 513,
+          "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9._/-]{0,254}[A-Za-z0-9])?:[A-Za-z0-9](?:[A-Za-z0-9._/-]{0,254}[A-Za-z0-9])?$"
+        },
+        "word": {
+          "$ref": "#/$defs/word"
+        },
+        "language": {
+          "$ref": "#/$defs/language"
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192,
+          "pattern": "^[^\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001F\\u007F\\uD800-\\uDFFF]+$"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "trust": {
+          "const": "untrusted"
+        },
+        "references": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/reference"
+          }
+        }
+      }
+    },
+    "ambiguity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meanings",
+        "references",
+        "automatic_selection"
+      ],
+      "properties": {
+        "meanings": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8192
+        },
+        "references": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4096
+        },
+        "automatic_selection": {
+          "const": false
+        }
+      }
+    }
+  }
+}

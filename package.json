@@ -1,15 +1,72 @@
 {
   "name": "word-layer",
-  "version": "0.1.0",
-  "description": "Natural language domains — each word is its own domain, no dots, no www, just the word.",
+  "version": "0.3.0",
+  "description": "Plural semantic references where words remain commons and resolution selects nothing.",
   "type": "module",
+  "main": "./dist/src/library.js",
+  "types": "./dist/src/library.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/library.d.ts",
+      "import": "./dist/src/library.js"
+    },
+    "./reference": {
+      "types": "./dist/src/reference.d.ts",
+      "import": "./dist/src/reference.js"
+    },
+    "./browser-handoff": {
+      "types": "./dist/src/browser-handoff.d.ts",
+      "import": "./dist/src/browser-handoff.js"
+    },
+    "./schema/*.json": "./schema/*.json"
+  },
+  "files": [
+    "dist/src",
+    "schema",
+    "DESIGN.md",
+    "PROTOCOL.md",
+    "LICENSE"
+  ],
   "scripts": {
     "dev": "bun src/index.ts",
     "start": "bun src/index.ts",
-    "test": "bun test"
+    "test": "bun test ./tests",
+    "test:handoff": "bun test ./tests/browser-handoff.test.ts",
+    "test:reference": "bun test ./tests/reference.test.ts",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
+    "typecheck": "tsc -p tsconfig.lib.json --noEmit",
+    "build": "bun run clean && tsc -p tsconfig.lib.json",
+    "smoke": "node -e \"import('./dist/src/library.js').then(m=>{if(m.WORD_BROWSER_HANDOFF_PROTOCOL!=='word-browser-handoff/0.1')process.exit(1)})\"",
+    "check:package": "npm pack --dry-run --ignore-scripts",
+    "ci": "bun run test && bun run typecheck && bun run build && bun run smoke && bun run check:package",
+    "ci:integration": "bun run --cwd integrations/agenttool ci",
+    "ci:all": "bun run ci && bun run ci:integration",
+    "prepack": "bun run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cambridgetcg/word-layer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cambridgetcg/word-layer/issues"
+  },
+  "homepage": "https://word-layer.vercel.app",
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
-    "hono": "^4.0.0"
+    "hono": "^4.12.32"
   },
-  "license": "MIT"
+  "devDependencies": {
+    "@types/bun": "^1.3.5",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20.19",
+    "bun": ">=1.3.5"
+  },
+  "license": "Apache-2.0",
+  "sideEffects": false
 }

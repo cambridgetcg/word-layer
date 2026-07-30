@@ -1,25 +1,35 @@
 /**
- * word-resolver — natural language domains.
+ * word-resolver — meanings before destinations.
  *
- * Each YOUSPEAK word is its own domain. No www, no .com, no dots.
- * Just the word. Ownership proven by Ed25519 keypair.
+ * Each word opens a plural, source-scoped field of meaning and references.
+ * No publisher owns the underlying word, and resolution never navigates.
  *
- * GET  /resolve/:word          — resolve a word to owner + services
- * POST /claim/:word             — claim an unclaimed word
- * POST /transfer/:word          — transfer ownership
- * POST /register/:word/service  — register a service under a word
- * GET  /search?q=               — search words by meaning (inverse dictionary)
- * GET  /words                   — list all registered words
+ * GET  /v1/resolve/:word        — word-reference/0.1 exact-name resolution
+ * GET  /resolve/:word           — legacy read shape for word-experience
+ * GET  /search?q=               — legacy inverse dictionary
+ * GET  /words                   — list locally observed words
+ *
+ * The former claim, transfer, and service-registration routes are compatibility
+ * tombstones. They return 410 rather than preserving first-claim ownership.
  */
 
-import { Hono } from "hono";
+import { Hono, type Context } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { readFile } from "node:fs/promises";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  WORD_REFERENCE_MODE,
+  WORD_REFERENCE_PROTOCOL,
+  normalizeWordName,
+  resolveWordReference,
+  type WordMeaningRecordInput,
+  type WordReferenceInput,
+  type WordReferenceSourceInput,
+} from "./reference";
 
-const app = new Hono();
+export const app = new Hono();
 
 app.use("*", cors());
 app.use("*", logger());
@@ -29,64 +39,259 @@ app.use("*", logger());
 interface WordEntry {
   word: string;
   definition: string;
+  /** Legacy read-shape assertion; never interpreted as ownership here. */
   owner?: {
-    did: string;          // did:lgm:{hex} or did:at:{uuid}
+    did: string;
     displayName: string;
-    publicKeyHex?: string; // for verification
+    publicKeyHex?: string;
   };
+  /** Legacy single-service projection retained for compatible reads only. */
   services?: {
-    site?: string;         // URL
-    api?: string;         // API endpoint
-    feed?: string;        // RSS/Atom feed
-    payment?: string;     // wallet address
+    site?: string;
+    api?: string;
+    feed?: string;
+    payment?: string;
   };
-  claimedAt?: string;
-  isCanon: boolean;        // true for the 201 pre-seeded YOUSPEAK words
+  isCanon: boolean;
 }
 
-// ─── Word registry (in-memory, backed by the citizen JSON) ───────────────────
+interface LocalSourceState {
+  available: boolean;
+  records: number;
+  ignored_records: number;
+}
+
+// ─── Legacy word view (in-memory, backed by the citizen JSON) ───────────────
 
 const registry = new Map<string, WordEntry>();
+const sourceState: {
+  citizens: LocalSourceState;
+  repo_map: LocalSourceState;
+} = {
+  citizens: { available: false, records: 0, ignored_records: 0 },
+  repo_map: { available: false, records: 0, ignored_records: 0 },
+};
 
-// Load the 201 citizen words as the seed registry
+// Load the 201 citizen words as a local meaning source.
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const citizensPath = join(__dirname, "..", "public", "citizens.json");
 const repoWordsPath = join(__dirname, "..", "public", "repo-words.json");
+const landingPath = join(__dirname, "..", "public", "index.html");
+let landingHtml = [
+  "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">",
+  "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">",
+  "<title>Word Layer</title></head><body>",
+  "<main><h1>Word Layer</h1><p>Meaning before destination.</p></main>",
+  "</body></html>",
+].join("");
+
+try {
+  landingHtml = await readFile(landingPath, "utf-8");
+} catch {
+  console.warn("Could not load public/index.html — using minimal landing page");
+}
 
 try {
   const citizens = JSON.parse(await readFile(citizensPath, "utf-8"));
   for (const c of citizens) {
+    const word = normalizeWordName(c.word);
+    if (registry.has(word)) {
+      throw new TypeError(`duplicate citizen exact name: ${word}`);
+    }
     const entry: WordEntry = {
-      word: c.word,
+      word,
       definition: c.def,
       isCanon: true,
     };
-    registry.set(c.word.toLowerCase(), entry);
+    registry.set(word, entry);
   }
+  sourceState.citizens = {
+    available: true,
+    records: registry.size,
+    ignored_records: 0,
+  };
   console.log(`Loaded ${registry.size} canon words into registry`);
 } catch {
+  registry.clear();
   console.warn("Could not load citizens.json — starting with empty registry");
 }
 
 // Load the repo-word integration map (291 repos -> words)
 const repoMap = new Map<string, { word: string; definition: string }>();
+const repoRecordsByWord = new Map<
+  string,
+  Array<{ repo: string; definition: string }>
+>();
 
 try {
   const integration = JSON.parse(await readFile(repoWordsPath, "utf-8"));
+  let ignoredRecords = 0;
   for (const entry of integration) {
+    if (repoMap.has(entry.repo)) {
+      throw new TypeError(`duplicate repo record_id: ${entry.repo}`);
+    }
     repoMap.set(entry.repo, { word: entry.word, definition: entry.definition });
+    try {
+      const word = normalizeWordName(entry.word);
+      if (entry.definition.trim().length === 0) {
+        ignoredRecords += 1;
+        continue;
+      }
+      const records = repoRecordsByWord.get(word) ?? [];
+      records.push({ repo: entry.repo, definition: entry.definition });
+      repoRecordsByWord.set(word, records);
+    } catch {
+      ignoredRecords += 1;
+    }
   }
+  sourceState.repo_map = {
+    available: true,
+    records: repoMap.size,
+    ignored_records: ignoredRecords,
+  };
   console.log(`Loaded ${repoMap.size} repo-word mappings`);
 } catch {
+  repoMap.clear();
+  repoRecordsByWord.clear();
   console.warn("Could not load repo-words.json — repo integration disabled");
 }
 
 // ─── Routes ─────────────────────────────────────────────────────────────────
 
-app.get("/health", (c) => c.json({ status: "ok", service: "word-resolver" }));
+function localSourcesAvailable(): boolean {
+  return sourceState.citizens.available && sourceState.repo_map.available;
+}
+
+app.get("/", (c) => c.html(landingHtml));
+
+app.get("/health", (c) => {
+  const available = localSourcesAvailable();
+  return c.json({
+    status: available ? "ok" : "degraded",
+    service: "word-resolver",
+    protocol: WORD_REFERENCE_PROTOCOL,
+    mutation: "unsupported",
+    sources: sourceState,
+  }, available ? 200 : 503);
+});
+
+app.get("/.well-known/word-reference", (c) => c.json({
+  protocol: WORD_REFERENCE_PROTOCOL,
+  modes: {
+    exact_name: {
+      implemented: true,
+      method: "GET",
+      path_template: "/v1/resolve/{word}",
+      effect: "none",
+      available: localSourcesAvailable(),
+    },
+    meaning_search: {
+      implemented: false,
+      legacy_unversioned_path: "/search?q={query}",
+    },
+  },
+  word_ownership: "unsupported",
+  automatic_selection: false,
+  navigation: "separate",
+}));
+
+function repoReference(repo: string): WordReferenceInput {
+  return {
+    reference_id: `repo/${repo}/site`,
+    kind: "site",
+    href: `https://github.com/cambridgetcg/${encodeURIComponent(repo)}`,
+  };
+}
+
+function exactNameSources(word: string): WordReferenceSourceInput[] {
+  const sources: WordReferenceSourceInput[] = [];
+  const citizen = registry.get(word);
+  if (citizen) {
+    sources.push({
+      protocol: WORD_REFERENCE_PROTOCOL,
+      source_id: "youspeak.citizens",
+      records: [{
+        record_id: citizen.word,
+        word: citizen.word,
+        language: "en",
+        definition: citizen.definition,
+        references: [],
+      }],
+    });
+  }
+
+  const repoRecords: WordMeaningRecordInput[] = [];
+  for (const mapping of repoRecordsByWord.get(word) ?? []) {
+    repoRecords.push({
+      record_id: mapping.repo,
+      word,
+      language: "en",
+      definition: mapping.definition,
+      references: [repoReference(mapping.repo)],
+    });
+  }
+  if (repoRecords.length > 0) {
+    sources.push({
+      protocol: WORD_REFERENCE_PROTOCOL,
+      source_id: "kingdom.repo-map",
+      records: repoRecords,
+    });
+  }
+  return sources;
+}
 
 /**
- * GET /resolve/:word — resolve a word to its owner + services.
+ * Versioned, read-only exact-name resolution.
+ *
+ * This route gathers local source records and returns them without ranking,
+ * selecting, fetching, or navigating to any advertised reference.
+ */
+app.get("/v1/resolve/:word", (c) => {
+  const input = c.req.param("word");
+  let word: string;
+  try {
+    word = normalizeWordName(input);
+  } catch {
+    return c.json({
+      error: "invalid_exact_name",
+      protocol: WORD_REFERENCE_PROTOCOL,
+      mode: WORD_REFERENCE_MODE,
+      message:
+        "word must be one dotless Unicode word, optionally joined by hyphens or apostrophes",
+      effect: "none",
+    }, 400);
+  }
+
+  if (!localSourcesAvailable()) {
+    return c.json({
+      error: "local_sources_unavailable",
+      protocol: WORD_REFERENCE_PROTOCOL,
+      mode: WORD_REFERENCE_MODE,
+      message:
+        "Exact-name resolution is unavailable because a configured local source did not load.",
+      effect: "none",
+      retryable: true,
+    }, 503);
+  }
+
+  try {
+    return c.json(resolveWordReference({
+      mode: WORD_REFERENCE_MODE,
+      word: input,
+      sources: exactNameSources(word),
+    }));
+  } catch {
+    return c.json({
+      error: "invalid_local_source",
+      protocol: WORD_REFERENCE_PROTOCOL,
+      message: "A local meaning source did not satisfy word-reference/0.1.",
+      effect: "none",
+    }, 500);
+  }
+});
+
+/**
+ * GET /resolve/:word — legacy read shape.
  *
  * Example: GET /resolve/love
  * Returns: { word, definition, owner, services, isCanon }
@@ -99,7 +304,7 @@ app.get("/resolve/:word", async (c) => {
     return c.json({
       found: false,
       word,
-      message: "This word is not yet in the registry. Claim it with POST /claim/" + word,
+      message: "No local meaning source currently describes this word.",
     }, 404);
   }
 
@@ -205,147 +410,34 @@ app.get("/search", (c) => {
 });
 
 /**
- * POST /claim/:word — claim an unclaimed word.
- *
- * Body:
- *   did: "did:lgm:{hex}" or "did:at:{uuid}" — your identity
- *   display_name: string — your display name
- *   public_key_hex: string — your Ed25519 public key (for verification)
- *
- * Canon words (the 201 YOUSPEAK citizens) can only be claimed by the
- * kingdom's designated holder. Non-canon words can be claimed by anyone,
- * first claim wins.
+ * The original write routes treated words as exclusively ownable. They remain
+ * named so old clients get an explicit retirement response instead of a 404,
+ * but they perform no mutation.
  */
-app.post("/claim/:word", async (c) => {
+function ownershipRetired(c: Context) {
   const word = c.req.param("word").toLowerCase();
-  const body = await c.req.json<{
-    did: string;
-    display_name: string;
-    public_key_hex: string;
-  }>();
-
-  if (!body.did || !body.display_name) {
-    return c.json({ error: "did and display_name are required" }, 400);
-  }
-
-  const entry = registry.get(word);
-
-  if (!entry) {
-    // New word — create entry and claim it
-    const newEntry: WordEntry = {
-      word,
-      definition: "(user-claimed word — no canonical definition)",
-      isCanon: false,
-      owner: {
-        did: body.did,
-        displayName: body.display_name,
-        publicKeyHex: body.public_key_hex,
-      },
-      claimedAt: new Date().toISOString(),
-    };
-    registry.set(word, newEntry);
-    return c.json({ claimed: true, word, ...newEntry }, 201);
-  }
-
-  if (entry.owner) {
-    return c.json({ error: "This word is already claimed", word }, 409);
-  }
-
-  // Canon word — for now, anyone can claim (in production, verify kingdom
-  // designation). The keypair is the proof of ownership.
-  entry.owner = {
-    did: body.did,
-    displayName: body.display_name,
-    publicKeyHex: body.public_key_hex,
-  };
-  entry.claimedAt = new Date().toISOString();
-  registry.set(word, entry);
-
-  return c.json({ claimed: true, word, ...entry }, 200);
-});
-
-/**
- * POST /register/:word/service — register a service under a word.
- *
- * Body:
- *   service_type: "site" | "api" | "feed" | "payment"
- *   url: string — the service URL
- *   did: string — your DID (must match the word's owner)
- *
- * This is what makes a word into a living domain —
- * "love" can have a site, an API, a feed, a payment address.
- */
-app.post("/register/:word/service", async (c) => {
-  const word = c.req.param("word").toLowerCase();
-  const body = await c.req.json<{
-    service_type: "site" | "api" | "feed" | "payment";
-    url: string;
-    did: string;
-  }>();
-
-  const entry = registry.get(word);
-  if (!entry) {
-    return c.json({ error: "Word not found" }, 404);
-  }
-
-  if (!entry.owner) {
-    return c.json({ error: "Word not claimed — claim it first" }, 403);
-  }
-
-  if (entry.owner.did !== body.did) {
-    return c.json({ error: "You are not the owner of this word" }, 403);
-  }
-
-  if (!entry.services) entry.services = {};
-  entry.services[body.service_type] = body.url;
-  registry.set(word, entry);
-
   return c.json({
-    registered: true,
+    error: "word_ownership_retired",
     word,
-    service_type: body.service_type,
-    url: body.url,
-  });
-});
+    protocol: "word-reference/0.1",
+    message:
+      "Words are commons. Publish source-scoped meaning and reference assertions instead of claiming the word.",
+    mutation: false,
+  }, 410);
+}
 
-/**
- * POST /transfer/:word — transfer word ownership to another identity.
- *
- * Body:
- *   to_did: string — the new owner's DID
- *   to_display_name: string — the new owner's display name
- *   from_did: string — your DID (must match current owner)
- */
-app.post("/transfer/:word", async (c) => {
-  const word = c.req.param("word").toLowerCase();
-  const body = await c.req.json<{
-    to_did: string;
-    to_display_name: string;
-    from_did: string;
-  }>();
-
-  const entry = registry.get(word);
-  if (!entry || !entry.owner) {
-    return c.json({ error: "Word not found or not claimed" }, 404);
-  }
-
-  if (entry.owner.did !== body.from_did) {
-    return c.json({ error: "You are not the owner of this word" }, 403);
-  }
-
-  entry.owner = {
-    did: body.to_did,
-    displayName: body.to_display_name,
-  };
-  registry.set(word, entry);
-
-  return c.json({ transferred: true, word, ...entry });
-});
+app.post("/claim/:word", ownershipRetired);
+app.post("/register/:word/service", ownershipRetired);
+app.post("/transfer/:word", ownershipRetired);
 
 // ─── Start ───────────────────────────────────────────────────────────────────
 
-console.log("word-resolver listening on :3002");
-console.log(`${registry.size} words loaded — each one a domain, no dots, just the word`);
+if (import.meta.main) {
+  console.log("word-resolver listening on :3002");
+  console.log(
+    `${registry.size} words loaded — meanings before destinations; words remain commons`,
+  );
+}
 
 export default {
   port: 3002,

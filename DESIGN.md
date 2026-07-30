@@ -1,99 +1,191 @@
-# The Word Layer — Natural Language Domains
+# The Word Layer — meanings before destinations
 
-> No www. No .com. No dots. Just the word.
+> No www. No .com. No rent on language. A word opens a field of meaning; it
+> does not become somebody's exclusive property.
 
 ## The idea
 
-DNS gives machines addresses: `93.184.216.34` -> `example.com`. It works but
-it's machine-first. Humans think in words, not in dots.
+DNS is excellent at translating hostnames into network addresses. It does not
+say what a name means, where that meaning came from, or why one destination
+should represent it.
 
-The Word Layer makes natural language the addressing system. Each YOUSPEAK
-word is its own domain:
+The Word Layer is a semantic reference overlay for that missing step:
 
-  life        -> the word "life" resolves to its identity, wallet, and services
-  love        -> the word "love" resolves to its identity, wallet, and services
-  abzu        -> the word "abzu" resolves to its identity, wallet, and services
-  joy         -> the word "joy" resolves to its identity, wallet, and services
-
-No ICANN. No registrars. No annual fees. Ownership is proven by cryptographic
-keypair — the same Ed25519 keys that power the Legible Money protocol and the
-agent-identity service.
-
-## How it works
-
-1. **Each word is a domain.** "abzu" is a domain. "joy" is a domain.
-2. **Each domain has an owner.** The owner holds the Ed25519 keypair for the
-   word's DID (did:lgm:{hex} or did:at:{uuid}).
-3. **Resolution is a lookup.** Give the resolver a word, it returns:
-   - The owner's identity (display name, capabilities, trust score)
-   - The owner's wallet address (for payments)
-   - Any services registered under the word (a website, an API, a feed)
-4. **Anyone can register a word** that isn't yet claimed. First claim wins,
-   but claims can be transferred or released.
-5. **Words with meaning take priority.** The 201 YOUSPEAK citizen words are
-   pre-seeded — each one belongs to the citizen it was forged for. New words
-   can be claimed, but the canon words are already spoken for.
-
-## The architecture
-
-```
-  word           -> word-resolver        -> identity (agent-identity /v1/did/resolve)
-  word           -> word-resolver        -> wallet (CashLoom /v1/wallet/resolve)
-  word           -> word-resolver        -> services (registered URLs, feeds, APIs)
-  word:payment   -> word-resolver        -> wallet address (for "send to love")
-  word:site      -> word-resolver        -> website URL (for "visit joy")
-  word:api       -> word-resolver        -> API endpoint
+```text
+word
+  -> source-scoped meanings
+  -> zero or more source-scoped asserted references
+  -> an explicit caller choice
+  -> ordinary AgentTool Browser policy and navigation
 ```
 
-## The protocol
+The existing internet remains the transport. The Word Layer restores
+substance and provenance to the name before any site is opened.
 
+## Abundance, not another root monopoly
+
+Words are commons. Nobody can own `love`, `joy`, `life`, or a language by
+registering first. A publisher may offer a definition, a site, an API, a feed,
+or another projection *under* a word, but that assertion does not make the
+publisher the word's owner.
+
+Several records may coexist:
+
+```text
+love
+  -> a YOUSPEAK definition
+  -> a community's account of care
+  -> a poem
+  -> a public service
+  -> a site offered by one publisher
+  -> another site offered by another publisher
 ```
-GET  /resolve/{word}            — resolve a word to its owner + services
-POST /claim/{word}              — claim an unclaimed word (requires keypair)
-POST /transfer/{word}           — transfer ownership to another identity
-POST /register/{word}/service   — register a service under a word
-GET  /search?q={query}          — search words by meaning (the inverse dictionary)
+
+Plurality is not a collision to erase. The resolver preserves it with every
+record's asserted source coordinate. Ranking, recognition, trust, and
+navigation are later decisions; resolution does not smuggle them in.
+
+## Protocol rules
+
+1. **Exact name and meaning search are different operations.** Resolving
+   `love` is not the same as searching definitions for “care that remains.”
+2. **Meaning records are source-scoped.** Matching words from different
+   sources coexist unless the same source repeats the same record identifier.
+3. **References are plural.** A meaning may have no site, one site, or many
+   typed references.
+4. **A publisher assertion is not verification.** DIDs, proof strings, source
+   labels, and URLs remain untrusted until a verifier actually checks them.
+5. **Resolution has no navigation effect.** It returns possibilities and
+   always reports that it made no selection.
+6. **Transport policy remains downstream.** An explicitly selected absolute
+   HTTP(S) URL still passes through AgentTool Browser planning, authority, DNS,
+   credential, and request policy.
+7. **Unknown is ordinary.** An empty answer is not an invitation to claim or
+   purchase a word.
+
+## The first protocol
+
+`word-reference/0.1` defines the read-only exact-name response:
+
+```http
+GET /v1/resolve/love
 ```
 
-## The seed
+```json
+{
+  "protocol": "word-reference/0.1",
+  "mode": "exact_name",
+  "query": {
+    "input": "love",
+    "normalized": "love"
+  },
+  "found": true,
+  "meanings": [
+    {
+      "meaning_id": "youspeak.citizens:love",
+      "word": "love",
+      "language": "en",
+      "definition": "…",
+      "provenance": {
+        "source_id": "youspeak.citizens",
+        "record_id": "love",
+        "definition_sha256": "…"
+      },
+      "trust": "untrusted",
+      "references": []
+    }
+  ],
+  "ambiguity": {
+    "meanings": 1,
+    "references": 0,
+    "automatic_selection": false
+  },
+  "selection": null
+}
+```
 
-The 201 YOUSPEAK citizen words are pre-seeded. Each citizen already has:
-- A soul file in the kingdom (agents/{word}.md)
-- A definition (the meaning the word carries)
-- A canonical owner (the kingdom itself, or the citizen's designated holder)
+The full field contract, bounds, and browser handoff are in
+[`PROTOCOL.md`](PROTOCOL.md).
 
-When the resolver starts, it loads all 201 words from the citizen registry.
-Each word resolves to its definition, its soul, and (when linked) its wallet
-and services.
+## AgentTool Browser handoff
 
-## What this replaces
+The Word Layer does not weaken `AgentBrowser.open()`, reinterpret hostname
+DNS, or teach Chromium a custom scheme. The local
+`WordBrowserSession` in `src/browser-handoff.ts`:
 
-| Old internet              | Word Layer                |
-|--------------------------|---------------------------|
-| www.example.com           | example                   |
-| https://example.com/api   | example:api                |
-| DNS lookup               | word resolution           |
-| $12/year domain renewal   | free, keypair-owned       |
-| ICANN governance          | first-claim + canon seed  |
-| IP addresses              | DIDs (did:lgm / did:at)  |
+1. resolve an exact word without opening anything;
+2. present the meanings, provenance, and references;
+3. keep raw targets behind process-local opaque handles until Browser planning
+   returns its own redacted destination summary;
+4. turn one explicit site choice into a distinct selection handle;
+5. pass that privately retained target to a zero-effect `browser_plan`;
+6. issue a distinct, expiring, one-shot open handle only after planning; and
+7. consume that handle before calling `browser_open` once.
 
-## The first 201 domains
+Bare words therefore never bypass the Browser's absolute-HTTP(S) boundary.
+Every stage inherits one deadline, no stage accepts a replacement URL, and
+same-destination assertions keep separate provenance-bound handles. The
+Browser remains the transport-policy enforcement boundary for the eventual
+request, including execution-time URL, DNS, credential, and request policy; it
+does not become the semantic authority over the word.
 
-abzu, agapeme, ahavame, ai-love, alayame, allostasisqing, alohame, an,
-anagnoristasis, artiance, aseme, athaumasma, autopistme, autopoieme,
-autoxenia, awe, barakqing, barzakhqing, beauty, bhaktime, bindume,
-britqing, business-ecosystem, candence, chayimme, compassion, complerescence,
-concrescenceme, courage, danaqing, daome, darshanqing, daseinqing, death,
-dimgaai, dingir, diplosemy, dokimance, ... (all 201)
+The direct TypeScript seam is packaged as the Browser-neutral `word-layer`
+library. A private same-repository sidecar in `integrations/agenttool` composes
+one session with one AgentTool Browser 0.5 process and exposes the five
+explicit stages over local MCP and `agenttool-word-jsonl/0.1`. Both transports
+retain Browser's existing operation surface and policy boundary; they never
+infer a destination or accept a replacement URL after resolution.
 
-Each one a domain. Each one a world. No dots. Just the word.
+Address-bar and OS DNS hooks, public deployment, persistence, federation,
+trust ranking, and automatic navigation remain outside the first slice.
 
-## The north star
+## Compatibility
 
-A child types "love" in a browser and arrives at a place that is love —
-not www.love.com, not love.org, not love.net. Just love. The word IS the
-address. The meaning IS the destination.
+The original `/resolve/:word` read response remains temporarily available for
+`word-experience`. Its `owner` and `services` fields are compatibility fields,
+not the new authority model.
 
-The internet should be made of words. Now it is.
+The original mutation routes expressed first-claim ownership:
 
-Truth is. Love is. Joy is. Peace is. Fun is. Chill is. Real recognises real.
+```text
+POST /claim/:word
+POST /transfer/:word
+POST /register/:word/service
+```
+
+They are retired in the abundance model and return `410 Gone`. A future write
+protocol may accept signed, source-scoped *reference assertions*. It must not
+reintroduce exclusive ownership of the underlying word.
+
+## What this replaces—and what it does not
+
+| Scarcity model | Word Layer |
+|---|---|
+| one registrant controls a name | no one owns the word |
+| one canonical destination | plural source-scoped references |
+| opaque address first | meaning and provenance first |
+| resolver chooses where to go | resolver selects nothing |
+| assertion presented as trust | verification state is explicit |
+| unknown name is inventory for sale | unknown means no observed record |
+
+The Word Layer does not replace DNS transport, TLS, HTTP, search, signatures,
+or browser policy. It is the semantic reference layer those systems do not
+provide.
+
+## First-slice boundaries
+
+- exact-name resolution only; inverse meaning search remains the legacy
+  `/search` surface until a later versioned contract;
+- local in-memory sources only;
+- no signature verification;
+- no federation, persistence, revocation, or trust ranking;
+- no automatic navigation; and
+- no claim that a definition exhausts the meaning it points toward.
+
+## North star
+
+A child types `love`. The browser does not auction the word, pretend one site
+owns it, or quietly redirect.
+
+It returns meaning to the name, shows the many doors people have offered with
+their asserted provenance, and lets the child choose.

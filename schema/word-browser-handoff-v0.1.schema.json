@@ -1,0 +1,769 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "word-browser-handoff-v0.1.schema.json",
+  "title": "Word Browser Handoff 0.1 Runtime Receipt",
+  "description": "Strict runtime outputs for the zero-authority, capability-based handoff from plural word resolution to Browser planning and one-shot opening.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/offer"
+    },
+    {
+      "$ref": "#/$defs/selection_receipt"
+    },
+    {
+      "$ref": "#/$defs/plan_receipt"
+    },
+    {
+      "$ref": "#/$defs/open_receipt"
+    }
+  ],
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9._/-]{0,254}[A-Za-z0-9])?$"
+    },
+    "word": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N}\\p{M}]*(?:[-'’][\\p{L}\\p{N}][\\p{L}\\p{N}\\p{M}]*)*$"
+    },
+    "language": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "^[a-z]{2,8}(?:-[a-z0-9]{1,8})*$"
+    },
+    "reference_kind": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9_-]*$"
+    },
+    "meaning_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 513,
+      "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9._/-]{0,254}[A-Za-z0-9])?:[A-Za-z0-9](?:[A-Za-z0-9._/-]{0,254}[A-Za-z0-9])?$"
+    },
+    "definition": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8192,
+      "pattern": "^[^\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001F\\u007F\\uD800-\\uDFFF]+$"
+    },
+    "bounded_assertion": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2048,
+      "pattern": "^[^\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001F\\u007F\\uD800-\\uDFFF]+$"
+    },
+    "bounded_proof": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8192,
+      "pattern": "^[^\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001F\\u007F\\uD800-\\uDFFF]+$"
+    },
+    "nullable_assertion": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/bounded_assertion"
+        }
+      ]
+    },
+    "nullable_proof": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/bounded_proof"
+        }
+      ]
+    },
+    "display_url": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 8192,
+      "format": "uri",
+      "allOf": [
+        {
+          "type": "string",
+          "pattern": "^https?://"
+        },
+        {
+          "type": "string",
+          "pattern": "^[^?#]+$"
+        }
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "session_id": {
+      "type": "string",
+      "maxLength": 512,
+      "pattern": "^session_[0-9a-z]+_[0-9a-z]+_[A-Za-z0-9_-]{43}$"
+    },
+    "resolution_id": {
+      "type": "string",
+      "maxLength": 512,
+      "pattern": "^resolution_[0-9a-z]+_[0-9a-z]+_[A-Za-z0-9_-]{43}$"
+    },
+    "choice_handle": {
+      "type": "string",
+      "maxLength": 512,
+      "pattern": "^choice_[0-9a-z]+_[0-9a-z]+_[A-Za-z0-9_-]{43}$"
+    },
+    "selection_handle": {
+      "type": "string",
+      "maxLength": 512,
+      "pattern": "^selection_[0-9a-z]+_[0-9a-z]+_[A-Za-z0-9_-]{43}$"
+    },
+    "open_handle": {
+      "type": "string",
+      "maxLength": 512,
+      "pattern": "^open_[0-9a-z]+_[0-9a-z]+_[A-Za-z0-9_-]{43}$"
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input",
+        "normalized"
+      ],
+      "properties": {
+        "input": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^[^\\u0000-\\u001F\\u007F\\uD800-\\uDFFF]+$"
+        },
+        "normalized": {
+          "$ref": "#/$defs/word"
+        }
+      }
+    },
+    "selected_query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "normalized"
+      ],
+      "properties": {
+        "normalized": {
+          "$ref": "#/$defs/word"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "record_id",
+        "definition_sha256"
+      ],
+      "properties": {
+        "source_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "record_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "definition_sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "offered_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reference_id",
+        "kind",
+        "source_id",
+        "asserted_by",
+        "proof",
+        "verification",
+        "trust",
+        "display_url",
+        "target_redacted",
+        "selectable",
+        "choice_handle"
+      ],
+      "properties": {
+        "reference_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "kind": {
+          "$ref": "#/$defs/reference_kind"
+        },
+        "source_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "asserted_by": {
+          "$ref": "#/$defs/nullable_assertion"
+        },
+        "proof": {
+          "$ref": "#/$defs/nullable_proof"
+        },
+        "verification": {
+          "const": "unverified"
+        },
+        "trust": {
+          "const": "untrusted"
+        },
+        "display_url": {
+          "$ref": "#/$defs/display_url"
+        },
+        "target_redacted": {
+          "type": "boolean"
+        },
+        "selectable": {
+          "type": "boolean"
+        },
+        "choice_handle": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/choice_handle"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "const": "site"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "selectable": {
+                "const": true
+              },
+              "choice_handle": {
+                "$ref": "#/$defs/choice_handle"
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "not": {
+                  "const": "site"
+                }
+              },
+              "selectable": {
+                "const": false
+              },
+              "choice_handle": {
+                "type": "null",
+                "const": null
+              }
+            }
+          }
+        }
+      ]
+    },
+    "offered_meaning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meaning_id",
+        "word",
+        "language",
+        "definition",
+        "provenance",
+        "trust",
+        "references"
+      ],
+      "properties": {
+        "meaning_id": {
+          "$ref": "#/$defs/meaning_id"
+        },
+        "word": {
+          "$ref": "#/$defs/word"
+        },
+        "language": {
+          "$ref": "#/$defs/language"
+        },
+        "definition": {
+          "$ref": "#/$defs/definition"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "trust": {
+          "const": "untrusted"
+        },
+        "references": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/offered_reference"
+          }
+        }
+      }
+    },
+    "offer_ambiguity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meanings",
+        "references",
+        "browser_choices",
+        "automatic_selection"
+      ],
+      "properties": {
+        "meanings": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8192
+        },
+        "references": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4096
+        },
+        "browser_choices": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4096
+        },
+        "automatic_selection": {
+          "const": false
+        }
+      }
+    },
+    "offer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "source_protocol",
+        "session_id",
+        "resolution_id",
+        "observed_at",
+        "expires_at",
+        "query",
+        "found",
+        "meanings",
+        "ambiguity",
+        "selection",
+        "authority",
+        "automatic_action"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "word-browser-handoff/0.1"
+        },
+        "source_protocol": {
+          "const": "word-reference/0.1"
+        },
+        "session_id": {
+          "$ref": "#/$defs/session_id"
+        },
+        "resolution_id": {
+          "$ref": "#/$defs/resolution_id"
+        },
+        "observed_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "query": {
+          "$ref": "#/$defs/query"
+        },
+        "found": {
+          "type": "boolean"
+        },
+        "meanings": {
+          "type": "array",
+          "maxItems": 8192,
+          "items": {
+            "$ref": "#/$defs/offered_meaning"
+          }
+        },
+        "ambiguity": {
+          "$ref": "#/$defs/offer_ambiguity"
+        },
+        "selection": {
+          "type": "null",
+          "const": null
+        },
+        "authority": {
+          "const": "none"
+        },
+        "automatic_action": {
+          "const": "never"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "type": "object",
+            "properties": {
+              "found": {
+                "const": true
+              }
+            },
+            "required": [
+              "found"
+            ]
+          },
+          "then": {
+            "type": "object",
+            "properties": {
+              "meanings": {
+                "type": "array",
+                "minItems": 1
+              }
+            }
+          },
+          "else": {
+            "type": "object",
+            "properties": {
+              "meanings": {
+                "type": "array",
+                "maxItems": 0
+              },
+              "ambiguity": {
+                "type": "object",
+                "properties": {
+                  "meanings": {
+                    "const": 0
+                  },
+                  "references": {
+                    "const": 0
+                  },
+                  "browser_choices": {
+                    "const": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "selected_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "query",
+        "meaning_id",
+        "word",
+        "language",
+        "provenance",
+        "reference_id",
+        "kind",
+        "source_id",
+        "asserted_by",
+        "proof",
+        "verification",
+        "trust",
+        "display_url",
+        "target_redacted"
+      ],
+      "properties": {
+        "query": {
+          "$ref": "#/$defs/selected_query"
+        },
+        "meaning_id": {
+          "$ref": "#/$defs/meaning_id"
+        },
+        "word": {
+          "$ref": "#/$defs/word"
+        },
+        "language": {
+          "$ref": "#/$defs/language"
+        },
+        "provenance": {
+          "$ref": "#/$defs/provenance"
+        },
+        "reference_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "kind": {
+          "const": "site"
+        },
+        "source_id": {
+          "$ref": "#/$defs/identifier"
+        },
+        "asserted_by": {
+          "$ref": "#/$defs/nullable_assertion"
+        },
+        "proof": {
+          "$ref": "#/$defs/nullable_proof"
+        },
+        "verification": {
+          "const": "unverified"
+        },
+        "trust": {
+          "const": "untrusted"
+        },
+        "display_url": {
+          "$ref": "#/$defs/display_url"
+        },
+        "target_redacted": {
+          "type": "boolean"
+        }
+      }
+    },
+    "selection_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "session_id",
+        "resolution_id",
+        "selection_handle",
+        "selected_at",
+        "expires_at",
+        "selected",
+        "next",
+        "authority",
+        "automatic_action"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "word-browser-handoff/0.1"
+        },
+        "session_id": {
+          "$ref": "#/$defs/session_id"
+        },
+        "resolution_id": {
+          "$ref": "#/$defs/resolution_id"
+        },
+        "selection_handle": {
+          "$ref": "#/$defs/selection_handle"
+        },
+        "selected_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "selected": {
+          "$ref": "#/$defs/selected_reference"
+        },
+        "next": {
+          "const": "plan"
+        },
+        "authority": {
+          "const": "none"
+        },
+        "automatic_action": {
+          "const": "never"
+        }
+      }
+    },
+    "json_without_href": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/json_without_href"
+          }
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "not": {
+              "const": "href"
+            }
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/json_without_href"
+          }
+        }
+      ]
+    },
+    "browser_plan": {
+      "type": "object",
+      "propertyNames": {
+        "not": {
+          "const": "href"
+        }
+      },
+      "required": [
+        "execution"
+      ],
+      "properties": {
+        "execution": {
+          "const": false
+        }
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/json_without_href"
+      }
+    },
+    "browser_action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "const": "new_tab"
+        }
+      }
+    },
+    "plan_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "session_id",
+        "resolution_id",
+        "open_handle",
+        "planned_at",
+        "expires_at",
+        "selected",
+        "browser_action",
+        "browser_plan",
+        "next",
+        "authority",
+        "automatic_action"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "word-browser-handoff/0.1"
+        },
+        "session_id": {
+          "$ref": "#/$defs/session_id"
+        },
+        "resolution_id": {
+          "$ref": "#/$defs/resolution_id"
+        },
+        "open_handle": {
+          "$ref": "#/$defs/open_handle"
+        },
+        "planned_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "expires_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "selected": {
+          "$ref": "#/$defs/selected_reference"
+        },
+        "browser_action": {
+          "$ref": "#/$defs/browser_action"
+        },
+        "browser_plan": {
+          "$ref": "#/$defs/browser_plan"
+        },
+        "next": {
+          "const": "open"
+        },
+        "authority": {
+          "const": "none"
+        },
+        "automatic_action": {
+          "const": "never"
+        }
+      }
+    },
+    "json_value": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/json_value"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/json_value"
+          }
+        }
+      ]
+    },
+    "open_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "protocol",
+        "session_id",
+        "resolution_id",
+        "attempted_at",
+        "attempted_once",
+        "selected",
+        "browser_result"
+      ],
+      "properties": {
+        "protocol": {
+          "const": "word-browser-handoff/0.1"
+        },
+        "session_id": {
+          "$ref": "#/$defs/session_id"
+        },
+        "resolution_id": {
+          "$ref": "#/$defs/resolution_id"
+        },
+        "attempted_at": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "attempted_once": {
+          "const": true
+        },
+        "selected": {
+          "$ref": "#/$defs/selected_reference"
+        },
+        "browser_result": {
+          "$ref": "#/$defs/json_value"
+        }
+      }
+    }
+  }
+}
