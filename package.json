@@ -1,6 +1,6 @@
 {
   "name": "word-layer",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Plural semantic references where words remain commons and resolution selects nothing.",
   "type": "module",
   "main": "./dist/src/library.js",

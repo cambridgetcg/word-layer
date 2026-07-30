@@ -77,6 +77,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const citizensPath = join(__dirname, "..", "public", "citizens.json");
 const repoWordsPath = join(__dirname, "..", "public", "repo-words.json");
 const landingPath = join(__dirname, "..", "public", "index.html");
+const explorerScriptPath = join(__dirname, "..", "public", "explorer.js");
 let landingHtml = [
   "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">",
   "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">",
@@ -84,11 +85,20 @@ let landingHtml = [
   "<main><h1>Word Layer</h1><p>Meaning before destination.</p></main>",
   "</body></html>",
 ].join("");
+let explorerJavaScript: string | null = null;
 
 try {
   landingHtml = await readFile(landingPath, "utf-8");
 } catch {
   console.warn("Could not load public/index.html — using minimal landing page");
+}
+
+try {
+  explorerJavaScript = await readFile(explorerScriptPath, "utf-8");
+} catch {
+  console.warn(
+    "Could not load public/explorer.js — interactive explorer unavailable",
+  );
 }
 
 try {
@@ -162,7 +172,39 @@ function localSourcesAvailable(): boolean {
   return sourceState.citizens.available && sourceState.repo_map.available;
 }
 
-app.get("/", (c) => c.html(landingHtml));
+const LANDING_CONTENT_SECURITY_POLICY = [
+  "default-src 'none'",
+  "script-src 'self'",
+  "style-src 'unsafe-inline'",
+  "connect-src 'self' https://word-layer.vercel.app",
+  "base-uri 'none'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "object-src 'none'",
+].join("; ");
+
+app.get("/", (c) => {
+  c.header("Content-Security-Policy", LANDING_CONTENT_SECURITY_POLICY);
+  c.header(
+    "Permissions-Policy",
+    "camera=(), geolocation=(), microphone=(), payment=()",
+  );
+  c.header("Referrer-Policy", "no-referrer");
+  c.header("X-Content-Type-Options", "nosniff");
+  return c.html(landingHtml);
+});
+
+app.get("/public/explorer.js", (c) => {
+  c.header("Cache-Control", "public, max-age=300");
+  c.header("Cross-Origin-Resource-Policy", "same-origin");
+  c.header("X-Content-Type-Options", "nosniff");
+  if (explorerJavaScript === null) {
+    return c.text("Interactive explorer unavailable.\n", 503);
+  }
+  return c.body(explorerJavaScript, 200, {
+    "Content-Type": "text/javascript; charset=utf-8",
+  });
+});
 
 app.get("/health", (c) => {
   const available = localSourcesAvailable();

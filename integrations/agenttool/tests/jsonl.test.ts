@@ -25,6 +25,8 @@ import {
   WORD_OPERATIONS,
   type WordWireSession,
 } from "../src/protocol.js";
+import type { RemoteWordResolverPort } from "../src/remote-resolver.js";
+import { AgenttoolWordSession } from "../src/session.js";
 
 const RETAINED_URL =
   "https://meaning.example/love/path?token=private-value#quiet-fragment";
@@ -311,6 +313,7 @@ function inertSession(
   return {
     sessionId: "word-session-test",
     resolve: unavailable,
+    resolveRemote: unavailable,
     select: unavailable,
     plan: unavailable,
     open: unavailable,
@@ -322,19 +325,30 @@ function inertSession(
   } as WordWireSession;
 }
 
-describe("agenttool-word-jsonl/0.1", () => {
-  test("uses the exact version, shared 14-operation registry, and dispatches every operation", async () => {
+describe("agenttool-word-jsonl/0.2", () => {
+  test("uses the exact version, shared 15-operation registry, and dispatches every operation", async () => {
     expect(WORD_JSONL_PROTOCOL_VERSION).toBe(
-      "agenttool-word-jsonl/0.1",
+      "agenttool-word-jsonl/0.2",
     );
     expect(WORD_BROWSER_OPERATIONS).toEqual([
       ...BROWSER_OPERATIONS,
       ...WORD_OPERATIONS,
     ]);
-    expect(WORD_BROWSER_OPERATIONS).toHaveLength(14);
+    expect(WORD_BROWSER_OPERATIONS).toHaveLength(15);
 
     const browser = new FakeBrowser();
-    const session = createSession(browser);
+    const remoteResolver: RemoteWordResolverPort = {
+      baseUrl: "https://resolver.example/",
+      timeoutMs: 10_000,
+      maxResponseBytes: 1_048_576,
+      async resolve() {
+        return resolutionInput();
+      },
+    };
+    const session = new AgenttoolWordSession(
+      createSession(browser),
+      remoteResolver,
+    );
     const seen: string[] = [];
 
     for (const operation of BROWSER_OPERATIONS) {
@@ -355,6 +369,13 @@ describe("agenttool-word-jsonl/0.1", () => {
       resolutionInput() as unknown as Record<string, unknown>,
     ) as ReturnType<WordWireSession["resolve"]>;
     seen.push("word_resolve");
+    await executeWordBrowserOperation(
+      asAgentBrowser(browser),
+      session,
+      "word_resolve_remote",
+      { mode: "exact_name", word: "LOVE" },
+    );
+    seen.push("word_resolve_remote");
     const choice = offer.meanings[0]!.references[0]!.choice_handle!;
     const selection = await executeWordBrowserOperation(
       asAgentBrowser(browser),
@@ -537,6 +558,10 @@ describe("agenttool-word-jsonl/0.1", () => {
         calls.push("resolve");
         throw new Error("must not run");
       },
+      async resolveRemote() {
+        calls.push("resolve_remote");
+        throw new Error("must not run");
+      },
       select() {
         calls.push("select");
         throw new Error("must not run");
@@ -559,6 +584,11 @@ describe("agenttool-word-jsonl/0.1", () => {
         ...resolutionInput(),
         url: injected,
       }),
+      request("resolve-remote", "word_resolve_remote", {
+        mode: "exact_name",
+        word: "love",
+        resolver_url: injected,
+      }),
       request("select", "word_select", {
         choice_handle: "choice",
         url: injected,
@@ -580,7 +610,7 @@ describe("agenttool-word-jsonl/0.1", () => {
       chunks(`${input}\n`),
     );
 
-    expect(envelopes).toHaveLength(5);
+    expect(envelopes).toHaveLength(6);
     for (const envelope of envelopes) {
       expectCode(envelope, "invalid_params");
     }

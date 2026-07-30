@@ -255,6 +255,10 @@ export async function executeWordBrowserOperation(
         params as unknown as Parameters<WordWireSession["resolve"]>[0],
       );
     }
+    case "word_resolve_remote":
+      return await session.resolveRemote(
+        parsedWordParams(method, rawParams),
+      );
     case "word_select":
       return session.select(parsedWordParams(method, rawParams));
     case "word_plan":

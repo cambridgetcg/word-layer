@@ -6,7 +6,7 @@
       "name": "@word-layer/agenttool",
       "dependencies": {
         "@modelcontextprotocol/server": "2.0.0",
-        "word-layer": "file:vendor/word-layer-0.3.0.tgz",
+        "word-layer": "file:vendor/word-layer-0.3.1.tgz",
         "zod": "4.4.3",
       },
       "devDependencies": {
@@ -54,7 +54,7 @@
 
     "undici-types": ["undici-types@8.3.0", "", {}, "sha512-j375ScV60dom+YkPFIfTLcOiPxkN/buHz5GobjLhixFuANaNs3C9l4GmrWqejgXWJ7BbJcFYpTEUkS1Ge8bpZQ=="],
 
-    "word-layer": ["word-layer@vendor/word-layer-0.3.0.tgz", { "dependencies": { "hono": "^4.12.32" } }, "sha512-xmlnsY6QkEWGuVwOWCGfx39jWdWvAKRVO0CRZwUHzQLWmHSL7J5u8AShO2I8/jwqgg6uvt2izeb4ObzJc8NFtA=="],
+    "word-layer": ["word-layer@vendor/word-layer-0.3.1.tgz", { "dependencies": { "hono": "^4.12.32" } }, "sha512-tQaT9wY/QJGV6fguCTrq/d+ZbR9Jc/9hRptCP2wXYkv75TaubH5V8bjcDYGWfo7X4bROLAzWkJUyDdHSEK2aXg=="],
 
     "zod": ["zod@4.4.3", "", {}, "sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ=="],
   }

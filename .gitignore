@@ -3,4 +3,4 @@ dist/
 .vercel/
 .env*.local
 *.tgz
-!integrations/agenttool/vendor/word-layer-0.3.0.tgz
+!integrations/agenttool/vendor/word-layer-0.3.1.tgz

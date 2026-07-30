@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://word-layer.local/schema/agenttool-word-jsonl-v0.2.schema.json",
+  "title": "AgentTool Word JSONL 0.2 envelope",
+  "description": "One request or response envelope for the local composed Word Layer and AgentTool Browser transport, including the opt-in process-fixed remote resolver read. Method-specific params are validated by the strict runtime schemas in the operation registry.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/request"
+    },
+    {
+      "$ref": "#/$defs/success"
+    },
+    {
+      "$ref": "#/$defs/failure"
+    }
+  ],
+  "$defs": {
+    "requestId": {
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        }
+      ]
+    },
+    "responseId": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/requestId"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "method": {
+      "enum": [
+        "browser_capabilities",
+        "browser_plan",
+        "browser_open",
+        "browser_observe",
+        "browser_act",
+        "browser_extract",
+        "browser_screenshot",
+        "browser_tabs",
+        "browser_close",
+        "word_resolve",
+        "word_resolve_remote",
+        "word_select",
+        "word_plan",
+        "word_open",
+        "word_close"
+      ]
+    },
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "id",
+        "method"
+      ],
+      "properties": {
+        "version": {
+          "const": "agenttool-word-jsonl/0.2"
+        },
+        "id": {
+          "$ref": "#/$defs/requestId"
+        },
+        "method": {
+          "$ref": "#/$defs/method"
+        },
+        "params": {
+          "type": "object"
+        }
+      }
+    },
+    "success": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "id",
+        "ok",
+        "result"
+      ],
+      "properties": {
+        "version": {
+          "const": "agenttool-word-jsonl/0.2"
+        },
+        "id": {
+          "$ref": "#/$defs/requestId"
+        },
+        "ok": {
+          "const": true
+        },
+        "result": true
+      }
+    },
+    "publicError": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,63}$"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "receipt": {
+          "type": "object"
+        }
+      }
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "id",
+        "ok",
+        "error"
+      ],
+      "properties": {
+        "version": {
+          "const": "agenttool-word-jsonl/0.2"
+        },
+        "id": {
+          "$ref": "#/$defs/responseId"
+        },
+        "ok": {
+          "const": false
+        },
+        "error": {
+          "$ref": "#/$defs/publicError"
+        }
+      }
+    }
+  }
+}

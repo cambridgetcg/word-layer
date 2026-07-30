@@ -16,6 +16,13 @@ describe("word-resolver — health", () => {
     expect(res.headers.get("content-type")).toContain("text/html");
     expect(body).toContain("Meaning before destination.");
     expect(body).toContain("word-reference/0.1");
+    expect(body).toContain("Explore the meaning commons.");
+    expect(body).toContain('id="word-form"');
+    expect(body).toContain('src="./public/explorer.js"');
+    expect(res.headers.get("content-security-policy")).toContain(
+      "frame-ancestors 'none'",
+    );
+    expect(res.headers.get("referrer-policy")).toBe("no-referrer");
   });
 
   it("returns ok", async () => {

@@ -4,6 +4,7 @@ import {
   AgentBrowser,
   BROWSER_ENV,
   BROWSER_PACKAGE_VERSION,
+  BrowserNetworkPolicy,
   formatProcessConfig,
   parseBrowserProcessConfig,
   publicBrowserError,
@@ -25,9 +26,29 @@ import {
 } from "./mcp.js";
 import {
   WORD_JSONL_PROTOCOL_VERSION,
+  publicWordError,
   type WordWireSession,
 } from "./protocol.js";
+import {
+  normalizeWordResolverBaseUrl,
+  RemoteWordResolver,
+  RemoteWordResolverError,
+  WORD_PUBLIC_DEMO_RESOLVER,
+  WORD_REMOTE_RESOLVER_LIMITS,
+  type RemoteWordResolverPort,
+} from "./remote-resolver.js";
+import { AgenttoolWordSession } from "./session.js";
 import { WORD_AGENTTOOL_VERSION } from "./version.js";
+
+export const WORD_AGENTTOOL_ENV = Object.freeze({
+  resolverUrl: "AGENTOOL_WORD_RESOLVER_URL",
+});
+
+export interface WordResolverProcessConfig {
+  readonly baseUrl?: string;
+  readonly configuredBy: "none" | "environment" | "flag" | "public_demo";
+  readonly browserArgs: readonly string[];
+}
 
 export interface WordAgenttoolCliDependencies {
   env?: Record<string, string | undefined>;
@@ -36,7 +57,14 @@ export interface WordAgenttoolCliDependencies {
   stdout?: Writable;
   stderr?: Writable;
   launch?: (config: BrowserProcessConfig) => Promise<AgentBrowser>;
-  createSession?: (browser: AgentBrowser) => WordWireSession;
+  createRemoteResolver?: (
+    config: WordResolverProcessConfig,
+    browserConfig: BrowserProcessConfig,
+  ) => RemoteWordResolverPort | undefined;
+  createSession?: (
+    browser: AgentBrowser,
+    remoteResolver?: RemoteWordResolverPort,
+  ) => WordWireSession;
   runMcp?: (
     browser: AgentBrowser,
     session: WordWireSession,
@@ -58,6 +86,8 @@ Usage:
   agenttool-word help
 
 Startup options:
+  --word-resolver HTTPS_BASE_URL
+  --public-resolver                    shorthand for ${WORD_PUBLIC_DEMO_RESOLVER}
   --headless | --headed
   --authority public|local|sovereign
   --public-web | --no-public-web
@@ -67,6 +97,7 @@ Startup options:
   --output-dir DIR
 
 Environment:
+  ${WORD_AGENTTOOL_ENV.resolverUrl}=HTTPS_BASE_URL
   ${BROWSER_ENV.headless}=1|0
   ${BROWSER_ENV.authority}=public|local|sovereign
   ${BROWSER_ENV.publicWeb}=1|0
@@ -77,11 +108,75 @@ Environment:
   ${BROWSER_ENV.executable}=PATH
   ${BROWSER_ENV.outputDir}=DIR
 
-Word meanings and references are bounded caller-supplied local state. Nothing
-is ranked or selected automatically. Browser authority is fixed at process
-start; Browser and page data are untrusted. Browser binaries are never
-downloaded automatically.
+Local word meanings are bounded caller-supplied state. An optional remote
+resolver must be chosen at process start; no tool call accepts or replaces its
+HTTPS base URL. Calling word_resolve_remote discloses the exact word in one
+bounded credential-free no-redirect read. All resolver, Browser, and page data
+is untrusted. Nothing is ranked, selected, planned, opened, retried, or
+downloaded automatically. Browser authority remains fixed at process start.
 `;
+
+function requiredResolverValue(
+  args: readonly string[],
+  index: number,
+): string {
+  const value = args[index + 1];
+  if (!value || value.startsWith("--")) {
+    throw new RemoteWordResolverError("remote_resolver_invalid_config");
+  }
+  return value;
+}
+
+/**
+ * Remove only the Word Layer process-start flags before delegating every
+ * Browser option to Browser's own strict parser.
+ */
+export function parseWordResolverProcessConfig(
+  args: readonly string[],
+  env: Record<string, string | undefined> = process.env,
+): WordResolverProcessConfig {
+  let rawBase = env[WORD_AGENTTOOL_ENV.resolverUrl]?.trim() || undefined;
+  let configuredBy: WordResolverProcessConfig["configuredBy"] =
+    rawBase ? "environment" : "none";
+  let resolverFlagSeen = false;
+  const browserArgs: string[] = [];
+
+  for (let index = 0; index < args.length; index += 1) {
+    const argument = args[index]!;
+    if (argument === "--word-resolver") {
+      if (resolverFlagSeen) {
+        throw new RemoteWordResolverError("remote_resolver_invalid_config");
+      }
+      rawBase = requiredResolverValue(args, index);
+      configuredBy = "flag";
+      resolverFlagSeen = true;
+      index += 1;
+      continue;
+    }
+    if (argument === "--public-resolver") {
+      if (resolverFlagSeen) {
+        throw new RemoteWordResolverError("remote_resolver_invalid_config");
+      }
+      rawBase = WORD_PUBLIC_DEMO_RESOLVER;
+      configuredBy = "public_demo";
+      resolverFlagSeen = true;
+      continue;
+    }
+    browserArgs.push(argument);
+  }
+
+  if (!rawBase) {
+    return {
+      configuredBy: "none",
+      browserArgs,
+    };
+  }
+  return {
+    baseUrl: normalizeWordResolverBaseUrl(rawBase),
+    configuredBy,
+    browserArgs,
+  };
+}
 
 function idempotentBrowser(browser: AgentBrowser): AgentBrowser {
   let closePromise: Promise<void> | undefined;
@@ -134,12 +229,39 @@ async function launchFrom(
 
 function createSession(
   browser: AgentBrowser,
+  remoteResolver: RemoteWordResolverPort | undefined,
   dependencies: WordAgenttoolCliDependencies,
 ): WordWireSession {
   if (dependencies.createSession) {
-    return dependencies.createSession(browser);
+    return dependencies.createSession(browser, remoteResolver);
   }
-  return new WordBrowserSession({ browser });
+  return new AgenttoolWordSession(
+    new WordBrowserSession({ browser }),
+    remoteResolver,
+  );
+}
+
+function createRemoteResolver(
+  wordConfig: WordResolverProcessConfig,
+  browserConfig: BrowserProcessConfig,
+  dependencies: WordAgenttoolCliDependencies,
+): RemoteWordResolverPort | undefined {
+  if (dependencies.createRemoteResolver) {
+    return dependencies.createRemoteResolver(wordConfig, browserConfig);
+  }
+  if (!wordConfig.baseUrl) return undefined;
+  const networkPolicy = new BrowserNetworkPolicy(
+    browserConfig.authority
+      ? { authority: browserConfig.authority }
+      : {
+          allowPublicWeb: browserConfig.allowPublicWeb,
+          allowLocalNetwork: browserConfig.allowLocalNetwork,
+        },
+  );
+  return new RemoteWordResolver({
+    baseUrl: wordConfig.baseUrl,
+    networkPolicy,
+  });
 }
 
 async function closeComposite(
@@ -241,10 +363,19 @@ export async function runWordAgenttoolCli(
   }
 
   try {
-    const config = parseBrowserProcessConfig(args, {
+    const wordConfig = parseWordResolverProcessConfig(
+      args,
+      dependencies.env ?? process.env,
+    );
+    const config = parseBrowserProcessConfig(wordConfig.browserArgs, {
       ...(dependencies.env ? { env: dependencies.env } : {}),
       ...(dependencies.cwd ? { cwd: dependencies.cwd } : {}),
     });
+    const remoteResolver = createRemoteResolver(
+      wordConfig,
+      config,
+      dependencies,
+    );
     const browser = await launchFrom(config, dependencies);
 
     if (command === "doctor") {
@@ -252,7 +383,7 @@ export async function runWordAgenttoolCli(
         stdout.write(
           `${JSON.stringify({
             ok: true,
-            version: "agenttool-word-doctor/0.1",
+            version: "agenttool-word-doctor/0.2",
             integration_version: WORD_AGENTTOOL_VERSION,
             browser_version: BROWSER_PACKAGE_VERSION,
             config: formatProcessConfig(config),
@@ -262,13 +393,40 @@ export async function runWordAgenttoolCli(
               handoff_protocol: WORD_BROWSER_HANDOFF_PROTOCOL,
               jsonl_protocol: WORD_JSONL_PROTOCOL_VERSION,
               source_model: "caller_supplied_local_state",
+              remote_resolver: remoteResolver
+                ? {
+                    enabled: true,
+                    base_url: remoteResolver.baseUrl,
+                    configured_by: wordConfig.configuredBy,
+                    fixed_at: "process_start",
+                    request: "explicit_word_resolve_remote_only",
+                    query_disclosed: true,
+                    credentials: "omitted",
+                    redirects: "blocked",
+                    retries: "none",
+                    timeout_ms: remoteResolver.timeoutMs,
+                    max_response_bytes: remoteResolver.maxResponseBytes,
+                    maximum_in_flight:
+                      WORD_REMOTE_RESOLVER_LIMITS.maximumInFlight,
+                    response_validation:
+                      "strict_local_word-reference/0.1_reproduction",
+                    trust: "untrusted",
+                  }
+                : {
+                    enabled: false,
+                    configured_by: "none",
+                    request: "unavailable",
+                  },
               automatic_selection: false,
               automatic_navigation: false,
             },
             checks: {
               browser_launch: "ok",
               automatic_download: false,
-              transport: "local_process_only",
+              control_transport: "local_process_only",
+              remote_source_egress: remoteResolver
+                ? "process_fixed_https_on_explicit_resolve"
+                : "disabled",
             },
           })}\n`,
         );
@@ -280,7 +438,7 @@ export async function runWordAgenttoolCli(
 
     let session: WordWireSession;
     try {
-      session = createSession(browser, dependencies);
+      session = createSession(browser, remoteResolver, dependencies);
     } catch (error) {
       await browser.close();
       throw error;
@@ -332,7 +490,9 @@ export async function runWordAgenttoolCli(
     }
     return 0;
   } catch (error) {
-    const detail = publicBrowserError(error);
+    const detail = error instanceof RemoteWordResolverError
+      ? publicWordError(error)
+      : publicBrowserError(error);
     stderr.write(`error: ${detail.code}: ${detail.message}\n`);
     return 1;
   }

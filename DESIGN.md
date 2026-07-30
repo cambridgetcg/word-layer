@@ -130,13 +130,28 @@ request, including execution-time URL, DNS, credential, and request policy; it
 does not become the semantic authority over the word.
 
 The direct TypeScript seam is packaged as the Browser-neutral `word-layer`
-library. A private same-repository sidecar in `integrations/agenttool` composes
-one session with one AgentTool Browser 0.5 process and exposes the five
-explicit stages over local MCP and `agenttool-word-jsonl/0.1`. Both transports
-retain Browser's existing operation surface and policy boundary; they never
-infer a destination or accept a replacement URL after resolution.
+library. The separately versioned sidecar in `integrations/agenttool` composes
+one session with one AgentTool Browser 0.5 process and exposes six Word
+operations over local MCP and `agenttool-word-jsonl/0.2`. Five preserve the
+local resolve-to-open capability stages. The sixth,
+`word_resolve_remote`, is an explicitly open-world source read from one HTTPS
+resolver selected when the process starts.
 
-Address-bar and OS DNS hooks, public deployment, persistence, federation,
+No remote resolver is privileged or configured by default. A tool call cannot
+supply or replace its URL. The read discloses the exact word, follows no
+redirects, sends no credentials or referrer, is bounded, and is accepted only
+when the local pure resolver exactly reproduces the whole response. Remote
+bytes remain untrusted observations. The default client admits no more than
+four simultaneous reads. They grant no source identity, semantic truth,
+completeness, selection, or Browser authority.
+
+The repository also includes a public read-only reference resolver and a
+Meaning Commons Explorer. The Explorer fetches only after explicit submission,
+preserves plural provenance, and renders asserted destinations as inert text.
+Neither public availability nor a friendly interface makes that resolver a
+semantic root.
+
+Address-bar and OS DNS hooks, persistence, recursive discovery, federation,
 trust ranking, and automatic navigation remain outside the first slice.
 
 ## Compatibility
@@ -176,7 +191,8 @@ provide.
 
 - exact-name resolution only; inverse meaning search remains the legacy
   `/search` surface until a later versioned contract;
-- local in-memory sources only;
+- local in-memory sources in the core resolver; optional live acquisition is
+  an explicit, separately versioned AgentTool integration operation;
 - no signature verification;
 - no federation, persistence, revocation, or trust ranking;
 - no automatic navigation; and

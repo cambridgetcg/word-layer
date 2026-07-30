@@ -12,12 +12,17 @@ import {
   type WordBrowserOffer,
   type WordBrowserSelectionReceipt,
 } from "word-layer";
+import {
+  RemoteWordResolverError,
+  type RemoteWordResolveOptions,
+} from "./remote-resolver.js";
 
 export const WORD_JSONL_PROTOCOL_VERSION =
-  "agenttool-word-jsonl/0.1" as const;
+  "agenttool-word-jsonl/0.2" as const;
 
 export const WORD_OPERATIONS = Object.freeze([
   "word_resolve",
+  "word_resolve_remote",
   "word_select",
   "word_plan",
   "word_open",
@@ -114,6 +119,12 @@ export const WORD_INPUT_SCHEMAS = Object.freeze({
       sources: z.array(sourceSchema).max(WORD_REFERENCE_LIMITS.sources),
     })
     .strict(),
+  word_resolve_remote: z
+    .object({
+      mode: z.literal("exact_name"),
+      word: boundedString(WORD_REFERENCE_LIMITS.wordInput),
+    })
+    .strict(),
   word_select: z.object({ choice_handle: handle }).strict(),
   word_plan: z.object({ selection_handle: handle }).strict(),
   word_open: z.object({ open_handle: handle }).strict(),
@@ -124,6 +135,10 @@ export type WordResolveInput = z.output<
   (typeof WORD_INPUT_SCHEMAS)["word_resolve"]
 >;
 
+export type WordResolveRemoteInput = z.output<
+  (typeof WORD_INPUT_SCHEMAS)["word_resolve_remote"]
+>;
+
 /**
  * Structural boundary used by transports and tests. A real
  * WordBrowserSession satisfies it without coupling this facade to a Browser
@@ -132,6 +147,10 @@ export type WordResolveInput = z.output<
 export interface WordWireSession {
   readonly sessionId: string;
   resolve(input: ExactNameResolutionInput): WordBrowserOffer;
+  resolveRemote(
+    input: WordResolveRemoteInput,
+    options?: RemoteWordResolveOptions,
+  ): Promise<WordBrowserOffer>;
   select(input: {
     choice_handle: string;
   }): WordBrowserSelectionReceipt;
@@ -151,6 +170,12 @@ export interface PublicWordError {
 }
 
 export function publicWordError(error: unknown): PublicWordError {
+  if (error instanceof RemoteWordResolverError) {
+    return {
+      code: error.code,
+      message: error.message.slice(0, 2_000),
+    };
+  }
   if (error instanceof WordBrowserHandoffError) {
     return {
       code: error.code,

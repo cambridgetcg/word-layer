@@ -35,6 +35,7 @@ import {
   WORD_UNTRUSTED_NOTE,
   type WordWireSession,
 } from "../src/protocol.js";
+import { RemoteWordResolverError } from "../src/remote-resolver.js";
 
 const PRIVATE_URL =
   "https://meaning.example/love/path?token=private#quiet";
@@ -125,14 +126,19 @@ async function request(
   server: McpServer,
   method: string,
   params: Record<string, unknown>,
+  options: { signal?: AbortSignal } = {},
 ) {
   const handler = (server as any).server._requestHandlers.get(method);
   if (!handler) throw new Error(`request handler not registered: ${method}`);
+  const signal = options.signal ?? new AbortController().signal;
   return await handler(
     { jsonrpc: "2.0", id: 1, method, params },
     {
       mcpReq: {
+        id: 1,
+        method,
         requestState: () => undefined,
+        signal,
       },
     },
   );
@@ -142,11 +148,12 @@ async function callTool(
   server: McpServer,
   name: string,
   args: Record<string, unknown> = {},
+  options: { signal?: AbortSignal } = {},
 ) {
   return await request(server, "tools/call", {
     name,
     arguments: args,
-  });
+  }, options);
 }
 
 function contentText(result: any): string {
@@ -166,6 +173,10 @@ function inertSession(
     dispatches: [] as string[],
     resolve() {
       state.dispatches.push("resolve");
+      return {} as never;
+    },
+    async resolveRemote() {
+      state.dispatches.push("resolve_remote");
       return {} as never;
     },
     select() {
@@ -195,7 +206,7 @@ function inertSession(
 }
 
 describe("Word Browser MCP composition", () => {
-  test("preserves Browser identity and registers exactly nine Browser plus five word tools", async () => {
+  test("preserves Browser identity and registers exactly nine Browser plus six word tools", async () => {
     const { browser, session } = createRuntime();
     const server = buildWordBrowserMcpServer(browser, session) as any;
     const result = await request(server, "tools/list", {});
@@ -210,8 +221,8 @@ describe("Word Browser MCP composition", () => {
       version: BROWSER_PACKAGE_VERSION,
     });
     expect(BROWSER_OPERATIONS).toHaveLength(9);
-    expect(WORD_OPERATIONS).toHaveLength(5);
-    expect(tools).toHaveLength(14);
+    expect(WORD_OPERATIONS).toHaveLength(6);
+    expect(tools).toHaveLength(15);
     expect(tools.map((tool) => tool.name).sort()).toEqual(
       [...WORD_BROWSER_OPERATIONS].sort(),
     );
@@ -221,6 +232,12 @@ describe("Word Browser MCP composition", () => {
       destructiveHint: false,
       idempotentHint: false,
       openWorldHint: false,
+    });
+    expect(byName.word_resolve_remote.annotations).toMatchObject({
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: false,
+      openWorldHint: true,
     });
     for (const name of ["word_select", "word_plan"]) {
       expect(byName[name].annotations).toMatchObject({
@@ -242,6 +259,119 @@ describe("Word Browser MCP composition", () => {
       idempotentHint: true,
       openWorldHint: false,
     });
+  });
+
+  test("remote resolve is an explicit open-world read with no caller origin or Browser dispatch", async () => {
+    const browserRuntime = new FakeBrowserRuntime();
+    let remoteCalls = 0;
+    const session = inertSession({
+      async resolveRemote(input) {
+        remoteCalls += 1;
+        expect(input).toEqual({ mode: "exact_name", word: "love" });
+        return {
+          protocol: WORD_BROWSER_HANDOFF_PROTOCOL,
+          source_protocol: WORD_REFERENCE_PROTOCOL,
+          session_id: "wire-session",
+          resolution_id: "resolution-remote",
+          observed_at: "2026-07-30T00:00:00.000Z",
+          expires_at: "2026-07-30T00:05:00.000Z",
+          query: { input: "love", normalized: "love" },
+          found: false,
+          meanings: [],
+          ambiguity: {
+            meanings: 0,
+            references: 0,
+            browser_choices: 0,
+            automatic_selection: false,
+          },
+          selection: null,
+          authority: "none",
+          automatic_action: "never",
+        };
+      },
+    });
+    const server = buildWordBrowserMcpServer(
+      browserRuntime as unknown as AgentBrowser,
+      session,
+    );
+    browserRuntime.clearCalls();
+
+    const rejected = await callTool(server, "word_resolve_remote", {
+      mode: "exact_name",
+      word: "love",
+      resolver_url: "https://attacker.example/",
+    });
+    expect(rejected.isError).toBe(true);
+    expect(remoteCalls).toBe(0);
+    expect(session.dispatches).toEqual([]);
+    expect(browserRuntime.calls).toEqual([]);
+
+    const resolved = await callTool(server, "word_resolve_remote", {
+      mode: "exact_name",
+      word: "love",
+    });
+    expect(resolved.isError).not.toBe(true);
+    expect(remoteCalls).toBe(1);
+    expect(resolved.structuredContent).toMatchObject({
+      found: false,
+      selection: null,
+      authority: "none",
+      automatic_action: "never",
+    });
+    expect(session.dispatches).toEqual([]);
+    expect(browserRuntime.calls).toEqual([]);
+    expect(contentText(resolved)).toStartWith(WORD_UNTRUSTED_NOTE);
+  });
+
+  test("propagates MCP request cancellation into remote resolution", async () => {
+    const browserRuntime = new FakeBrowserRuntime();
+    let observedSignal: AbortSignal | undefined;
+    let started!: () => void;
+    const began = new Promise<void>((resolve) => {
+      started = resolve;
+    });
+    const session = inertSession({
+      async resolveRemote(_input, options) {
+        observedSignal = options?.signal;
+        started();
+        return await new Promise<never>((_resolve, reject) => {
+          const abort = () => {
+            reject(new RemoteWordResolverError("remote_resolver_aborted"));
+          };
+          if (options?.signal?.aborted) {
+            abort();
+          } else {
+            options?.signal?.addEventListener("abort", abort, { once: true });
+          }
+        });
+      },
+    });
+    const server = buildWordBrowserMcpServer(
+      browserRuntime as unknown as AgentBrowser,
+      session,
+    );
+    browserRuntime.clearCalls();
+    const requestController = new AbortController();
+
+    const pending = callTool(
+      server,
+      "word_resolve_remote",
+      { mode: "exact_name", word: "love" },
+      { signal: requestController.signal },
+    );
+    await began;
+    expect(observedSignal).toBe(requestController.signal);
+    requestController.abort();
+
+    const cancelled = await pending;
+    expect(cancelled.isError).toBe(true);
+    expect(cancelled.structuredContent).toEqual({
+      error: {
+        code: "remote_resolver_aborted",
+        message: "the remote word resolver request was cancelled",
+      },
+    });
+    expect(browserRuntime.calls).toEqual([]);
   });
 
   test("resolves and selects without Browser calls, then plans and opens the exact retained URL once", async () => {
@@ -508,6 +638,8 @@ describe("Word Browser MCP composition", () => {
     expect(promptText).toContain("STOP 2");
     expect(promptText).toContain("STOP 3");
     expect(promptText).toContain("Do not call any tool automatically");
+    expect(promptText).toContain("word_resolve_remote");
+    expect(promptText).toContain("disclosing this word");
     expect(session.dispatches).toEqual([]);
     expect(session.closeCount).toBe(0);
     expect(browserRuntime.calls).toEqual([]);

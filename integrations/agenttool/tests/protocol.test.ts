@@ -41,4 +41,33 @@ describe("Word transport protocol bounds", () => {
       }).success,
     ).toBe(false);
   });
+
+  test("remote resolution accepts only exact mode and a word, never an origin or sources", () => {
+    expect(
+      WORD_INPUT_SCHEMAS.word_resolve_remote.safeParse({
+        mode: "exact_name",
+        word: "love",
+      }).success,
+    ).toBe(true);
+    expect(
+      WORD_INPUT_SCHEMAS.word_resolve_remote.safeParse({
+        mode: "meaning_search",
+        word: "love",
+      }).success,
+    ).toBe(false);
+    expect(
+      WORD_INPUT_SCHEMAS.word_resolve_remote.safeParse({
+        mode: "exact_name",
+        word: "love",
+        resolver_url: "https://attacker.example/",
+      }).success,
+    ).toBe(false);
+    expect(
+      WORD_INPUT_SCHEMAS.word_resolve_remote.safeParse({
+        mode: "exact_name",
+        word: "love",
+        sources: [],
+      }).success,
+    ).toBe(false);
+  });
 });

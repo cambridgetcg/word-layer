@@ -7,11 +7,13 @@ import {
   WORD_JSONL_PROTOCOL_VERSION,
 } from "../src/protocol.js";
 
-async function loadSchema(): Promise<Record<string, unknown>> {
+async function loadSchema(
+  version: "0.1" | "0.2" = "0.2",
+): Promise<Record<string, unknown>> {
   return JSON.parse(
     await readFile(
       new URL(
-        "../schema/agenttool-word-jsonl-v0.1.schema.json",
+        `../schema/agenttool-word-jsonl-v${version}.schema.json`,
         import.meta.url,
       ),
       "utf8",
@@ -19,7 +21,7 @@ async function loadSchema(): Promise<Record<string, unknown>> {
   ) as Record<string, unknown>;
 }
 
-describe("agenttool-word-jsonl/0.1 schema", () => {
+describe("agenttool-word-jsonl/0.2 schema", () => {
   test("locks the schema operation set to the runtime registry", async () => {
     const schema = await loadSchema() as {
       $defs: { method: { enum: string[] } };
@@ -65,5 +67,23 @@ describe("agenttool-word-jsonl/0.1 schema", () => {
     expect(validate({ ...request, method: "word_rank" })).toBe(false);
     expect(validate({ ...failure, error: { ...failure.error, stack: "x" } }))
       .toBe(false);
+  });
+
+  test("keeps the released 0.1 schema available without the new operation", async () => {
+    const schema = await loadSchema("0.1") as {
+      $defs: {
+        method: { enum: string[] };
+        request: {
+          properties: { version: { const: string } };
+        };
+      };
+    };
+
+    expect(schema.$defs.request.properties.version.const).toBe(
+      "agenttool-word-jsonl/0.1",
+    );
+    expect(schema.$defs.method.enum).toContain("word_resolve");
+    expect(schema.$defs.method.enum).not.toContain("word_resolve_remote");
+    expect(schema.$defs.method.enum).toHaveLength(14);
   });
 });

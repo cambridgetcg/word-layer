@@ -12,8 +12,10 @@ and
 [`schema/word-reference-resolution-v0.1.schema.json`](schema/word-reference-resolution-v0.1.schema.json);
 the four handoff envelopes share
 [`schema/word-browser-handoff-v0.1.schema.json`](schema/word-browser-handoff-v0.1.schema.json).
-This document does not claim that a public resolver, an OS resolver, or
-browser-address-bar integration is deployed.
+The reference implementation has a public read-only resolver, but its
+location, availability, and source set are not protocol authority or normative
+parts of this contract. No OS resolver or browser-address-bar integration is
+defined here.
 
 ## 1. Purpose
 
@@ -454,34 +456,47 @@ Browser retains its existing requirements and boundaries:
 - Browser remains responsible for surfacing navigation uncertainty.
 
 The Word Layer MUST NOT weaken, bypass, or claim to replace those checks. This
-repository now contains the direct TypeScript handoff session and its
-acceptance tests plus a private local sidecar in `integrations/agenttool`. The
-sidecar composes one handoff session with the exact same AgentTool Browser
+repository contains the direct TypeScript handoff session and its acceptance
+tests plus a separately versioned local sidecar in `integrations/agenttool`.
+The sidecar composes one handoff session with the exact same AgentTool Browser
 instance and exposes Browser's operations plus:
 
 | Operation | Accepted input | Effect |
 |---|---|---|
 | `word_resolve` | exact-name word and bounded caller-supplied sources | local resolution and capability allocation; no Browser call |
+| `word_resolve_remote` | exact-name word only | one bounded read from the process-fixed HTTPS resolver, then local canonical validation and capability allocation; no Browser call |
 | `word_select` | one opaque choice handle | local one-stage transition |
 | `word_plan` | one opaque selection handle | one zero-effect Browser plan |
 | `word_open` | one opaque open handle | at most one Browser open attempt |
 | `word_close` | empty object | invalidate Word handles only |
 
 After `word_resolve`, no Word operation accepts a URL, `session_id`, or
-`resolution_id`. MCP and `agenttool-word-jsonl/0.1` validate these strict
-inputs against one operation registry. The JSONL facade also delegates the
-current Browser registry, processes requests sequentially, and places no
-diagnostics on protocol stdout. `browser_close`, transport closure, input EOF,
-or process shutdown closes both layers; `word_close` deliberately leaves raw
-Browser operations available.
+`resolution_id`. `word_resolve_remote` likewise accepts no URL; its one
+optional resolver base is chosen at process start. MCP and
+`agenttool-word-jsonl/0.2` validate these strict inputs against one operation
+registry. The released `agenttool-word-jsonl/0.1` schema remains immutable
+history. The JSONL facade also delegates the current Browser registry,
+processes requests sequentially, and places no diagnostics on protocol
+stdout. `browser_close`, transport closure, input EOF, or process shutdown
+closes both layers; `word_close` deliberately leaves raw Browser operations
+available.
 
 The composed MCP surface retains AgentTool Browser 0.5's server identity
 because Browser owns the base server builder. Its enumerated operation set,
 rather than a renamed server, is the capability declaration.
 
-The source model remains caller-supplied local state. The sidecar does not
-discover, endorse, rank, or imply completeness of sources. Its MCP guide and
-prompt are static instructions only and cannot dispatch an operation.
+The pure `word_resolve` source model remains caller-supplied local state.
+`word_resolve_remote` is a distinct, opt-in open-world acquisition boundary:
+it discloses the exact word to one caller-chosen, process-fixed HTTPS resolver,
+sends no credentials or referrer, follows no redirects, performs no retries,
+admits no more than four simultaneous reads, and accepts only a bounded
+response that the local pure resolver reproduces exactly. It reuses
+process-fixed Browser network policy. Public/local classified authority
+performs a DNS preflight; sovereign authority may delegate DNS to the request
+runtime. Neither mode pins the connected address or constitutes an SSRF
+sandbox. The sidecar does not discover, endorse, rank, or imply completeness
+of sources. Its MCP guide and prompt are static instructions only and cannot
+dispatch an operation.
 
 Handoff offers default to a 256 KiB serialized bound and cannot exceed one
 MiB. The bound is checked before capabilities become reachable. A transport
@@ -506,8 +521,8 @@ dispatched. Any returned Browser observation remains untrusted remote content
 and may disclose destination details.
 
 Neither the sidecar nor the schema modifies an address bar, installs an OS DNS
-handler, persists handles across restarts, federates sources, establishes
-trust, or deploys a service.
+handler, persists handles across restarts, recursively discovers or federates
+sources, establishes trust, or deploys a Browser service.
 
 ## 10. Legacy compatibility
 
@@ -542,12 +557,16 @@ assertions, but it cannot grant exclusive ownership of the word itself.
   content, are untrusted data, never host or tool instructions;
 - **homographs and confusables** — normalization does not establish identity;
 - **phishing or malicious sites** — an HTTP(S) URL is not a safety verdict;
-- **DNS rebinding, proxy behavior, redirects, or connected-peer identity** —
-  these remain within the eventual Browser/network boundary;
+- **DNS rebinding, proxy behavior, or connected-peer identity** — classified
+  authority may perform DNS preflight, while sovereign authority may delegate
+  it to the request runtime; neither pins the connected address. Redirects are
+  blocked by the remote operation, but eventual Browser navigation retains its
+  own network boundary;
 - **Sybil publication** — plurality can include many assertions from one actor;
 - **ranking capture** — this version has no ranking or default result;
-- **freshness, revocation, federation, or durable availability** — the first
-  slice uses caller-supplied local source state;
+- **freshness, revocation, federation, or durable availability** — local
+  sources and an optional live remote observation carry no freshness or
+  completeness proof;
 - **authorization or consent** — a reference does not authorize account,
   payment, credential, relationship, or off-platform action; or
 - **semantic completeness** — a definition points toward meaning; it does not

@@ -88,7 +88,7 @@ try {
   ) {
     throw new Error(
       "installed bundled core file set is stale; rebuild the root package, "
-      + "refresh vendor/word-layer-0.3.0.tgz, and update bun.lock",
+      + "refresh vendor/word-layer-0.3.1.tgz, and update bun.lock",
     );
   }
   for (const file of coreEntry.files) {
@@ -125,6 +125,14 @@ try {
   if (!paths.has("node_modules/word-layer/dist/src/library.js")) {
     throw new Error("packed sidecar omitted the word-layer library runtime");
   }
+  for (const schema of [
+    "schema/agenttool-word-jsonl-v0.1.schema.json",
+    "schema/agenttool-word-jsonl-v0.2.schema.json",
+  ]) {
+    if (!paths.has(schema)) {
+      throw new Error(`packed sidecar omitted ${schema}`);
+    }
+  }
   if (
     [...paths].some((path) =>
       path.includes("/.git/")
@@ -157,8 +165,8 @@ try {
       "--input-type=module",
       "--eval",
       "const m=await import('@word-layer/agenttool');"
-        + "if(m.WORD_JSONL_PROTOCOL_VERSION!=='agenttool-word-jsonl/0.1'"
-        + "||m.WORD_BROWSER_OPERATIONS.length!==14)process.exit(1)",
+        + "if(m.WORD_JSONL_PROTOCOL_VERSION!=='agenttool-word-jsonl/0.2'"
+        + "||m.WORD_BROWSER_OPERATIONS.length!==15)process.exit(1)",
     ],
     scratch,
   );
@@ -167,7 +175,7 @@ try {
     ["help"],
     scratch,
   );
-  if (!help.startsWith("agenttool-word 0.1.0")) {
+  if (!help.startsWith("agenttool-word 0.2.0")) {
     throw new Error("freshly installed CLI help smoke failed");
   }
 

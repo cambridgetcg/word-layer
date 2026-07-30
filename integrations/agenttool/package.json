@@ -1,7 +1,7 @@
 {
   "name": "@word-layer/agenttool",
-  "version": "0.1.0",
-  "description": "Local AgentTool Browser transports for the plural word-layer handoff protocol.",
+  "version": "0.2.0",
+  "description": "AgentTool Browser transports for plural local meanings and opt-in process-fixed remote resolution.",
   "type": "module",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -31,7 +31,7 @@
     "typecheck": "tsc --noEmit",
     "test": "bun test ./tests",
     "build": "bun run clean && tsc",
-    "smoke": "node -e \"import('./dist/src/index.js').then(m=>{if(m.WORD_JSONL_PROTOCOL_VERSION!=='agenttool-word-jsonl/0.1')process.exit(1)})\"",
+    "smoke": "node -e \"import('./dist/src/index.js').then(m=>{if(m.WORD_JSONL_PROTOCOL_VERSION!=='agenttool-word-jsonl/0.2')process.exit(1)})\"",
     "check:package": "bun install --frozen-lockfile && bun scripts/check-package.ts",
     "ci": "bun run build:core && bun run typecheck && bun run test && bun run build && bun run smoke && bun run check:package",
     "prepack": "bun run build"
@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.0.0",
-    "word-layer": "file:vendor/word-layer-0.3.0.tgz",
+    "word-layer": "file:vendor/word-layer-0.3.1.tgz",
     "zod": "4.4.3"
   },
   "bundleDependencies": [
