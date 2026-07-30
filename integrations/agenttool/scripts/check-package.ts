@@ -1,7 +1,13 @@
 import { createHash } from "node:crypto";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import {
+  mkdtemp,
+  readFile,
+  readdir,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, relative, sep } from "node:path";
 import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
@@ -29,6 +35,26 @@ function run(
   return result.stdout;
 }
 
+async function listPackageFiles(
+  root: string,
+  directory = root,
+): Promise<string[]> {
+  const files: string[] = [];
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const absolute = join(directory, entry.name);
+    const path = relative(root, absolute).split(sep).join("/");
+    if (entry.isDirectory()) {
+      if (path === "node_modules" || path.startsWith("node_modules/")) {
+        continue;
+      }
+      files.push(...await listPackageFiles(root, absolute));
+    } else if (entry.isFile()) {
+      files.push(path);
+    }
+  }
+  return files.sort();
+}
+
 const packageRoot = fileURLToPath(new URL("..", import.meta.url));
 const coreRoot = fileURLToPath(new URL("../../..", import.meta.url));
 const scratch = await mkdtemp(join(tmpdir(), "agenttool-word-pack-"));
@@ -49,22 +75,26 @@ try {
   ) as PackEntry[];
   const coreEntry = currentCorePack[0];
   if (!coreEntry) throw new Error("npm pack returned no core package");
-  const [currentCore, vendoredCore] = await Promise.all([
-    readFile(join(scratch, coreEntry.filename)),
-    readFile(join(packageRoot, "vendor", coreEntry.filename)),
-  ]);
   const digest = (bytes: Uint8Array) =>
     createHash("sha256").update(bytes).digest("hex");
-  if (digest(currentCore) !== digest(vendoredCore)) {
+  const installedCoreRoot = join(packageRoot, "node_modules", "word-layer");
+  const expectedCorePaths = coreEntry.files.map((file) => file.path).sort();
+  const installedCorePaths = await listPackageFiles(installedCoreRoot);
+  if (
+    expectedCorePaths.length !== installedCorePaths.length
+    || expectedCorePaths.some(
+      (path, index) => path !== installedCorePaths[index],
+    )
+  ) {
     throw new Error(
-      "vendored word-layer core is stale; rebuild the root package, refresh "
-      + "vendor/word-layer-0.3.0.tgz, and update bun.lock",
+      "installed bundled core file set is stale; rebuild the root package, "
+      + "refresh vendor/word-layer-0.3.0.tgz, and update bun.lock",
     );
   }
   for (const file of coreEntry.files) {
     const [rootFile, installedFile] = await Promise.all([
       readFile(join(coreRoot, file.path)),
-      readFile(join(packageRoot, "node_modules", "word-layer", file.path)),
+      readFile(join(installedCoreRoot, file.path)),
     ]);
     if (digest(rootFile) !== digest(installedFile)) {
       throw new Error(
