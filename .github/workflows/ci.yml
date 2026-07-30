@@ -18,4 +18,5 @@ jobs:
         with:
           bun-version: 1.3.5
       - run: bun install --frozen-lockfile
+      - run: bun install --cwd integrations/agenttool --frozen-lockfile
       - run: bun run ci:all
